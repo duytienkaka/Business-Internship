@@ -22,6 +22,15 @@
 ## 📖 1. Giới thiệu
 Platform ERP được áp dụng vào học phần Thực tập doanh nghiệp dựa trên mã nguồn mở Odoo. 
 
+## 🖼️ Poster dự án
+Đây là poster giới thiệu đề tài ERP: Hệ thống quản lý dự án và công việc.
+
+<div align="center">
+    <img src="docs/poster/project_nifty_poster.png" alt="Poster ERP - He thong quan ly du an va cong viec" width="720"/>
+</div>
+
+> Lưu ý: đặt file ảnh poster tại `docs/poster/project_nifty_poster.png` để README hiển thị đúng.
+
 ## 🔧 2. Các công nghệ được sử dụng
 <div align="center">
 
