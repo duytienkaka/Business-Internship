@@ -1,0 +1,38 @@
+{
+    'name': 'Project Nifty',
+    'version': '16.0.1.0.0',
+    'summary': 'Modern Project Management like Nifty',
+    'description': 'Manage projects, tasks, documents, files, and members with a modern UX.',
+    'author': 'Your Company',
+    'website': 'https://yourcompany.com',
+    'category': 'Project',
+    'depends': ['base', 'mail', 'web', 'nhan_su'],
+    'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
+        'data/project_nifty_hr_seed.xml',
+        'data/project_nifty_sample_data.xml',
+        'views/project_views.xml',
+        'views/team_views.xml',
+        'views/tasklist_views.xml',
+        'views/task_views.xml',
+        'views/document_views.xml',
+        'views/file_views.xml',
+        'views/menu.xml',
+    ],
+    'demo': [
+        'demo/project_nifty_demo.xml',
+    ],
+    'assets': {
+        'web.assets_backend': [
+            'project_nifty/static/src/js/**/*.js',
+            'project_nifty/static/src/scss/**/*.scss',
+        ],
+        'web.assets_qweb': [
+            'project_nifty/static/src/xml/**/*.xml',
+        ],
+    },
+    'installable': True,
+    'application': True,
+    'license': 'LGPL-3',
+}

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_nifty_file_search" model="ir.ui.view">
+        <field name="name">project.nifty.file.search</field>
+        <field name="model">project.nifty.file</field>
+        <field name="arch" type="xml">
+            <search string="Files">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="uploaded_by"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_project_nifty_file_tree" model="ir.ui.view">
+        <field name="name">project.nifty.file.tree</field>
+        <field name="model">project.nifty.file</field>
+        <field name="arch" type="xml">
+            <tree string="Files">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="uploaded_by"/>
+                <field name="upload_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_project_nifty_file_kanban" model="ir.ui.view">
+        <field name="name">project.nifty.file.kanban</field>
+        <field name="model">project.nifty.file</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile project_nifty_file_kanban" quick_create="1">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="uploaded_by"/>
+                <field name="upload_date"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record project_nifty_file_card">
+                            <div class="o_kanban_record_top">
+                                <strong><field name="name"/></strong>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <div class="mb-1"><field name="project_id"/></div>
+                                <div class="mb-1">Uploaded by: <field name="uploaded_by"/></div>
+                                <div>Upload date: <field name="upload_date"/></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_project_nifty_file_form" model="ir.ui.view">
+        <field name="name">project.nifty.file.form</field>
+        <field name="model">project.nifty.file</field>
+        <field name="arch" type="xml">
+            <form string="File">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="project_id"/>
+                        <field name="uploaded_by" readonly="1"/>
+                        <field name="upload_date" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="file" filename="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_project_nifty_files" model="ir.actions.act_window">
+        <field name="name">Files</field>
+        <field name="res_model">project.nifty.file</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="view_project_nifty_file_search"/>
+    </record>
+</odoo>

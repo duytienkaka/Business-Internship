@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="project_nifty_sample_nhan_vien_admin" model="nhan_vien">
+        <field name="ma_dinh_danh">NV-PM-ADMIN</field>
+        <field name="ho_ten_dem">Quan tri</field>
+        <field name="ten">He thong</field>
+        <field name="email">admin@example.com</field>
+        <field name="ngay_sinh">1990-05-15</field>
+        <field name="user_id" ref="base.user_admin"/>
+    </record>
+
+    <record id="project_nifty_sample_nhan_vien_analyst" model="nhan_vien">
+        <field name="ma_dinh_danh">NV-PM-BA</field>
+        <field name="ho_ten_dem">Nguyen Thi</field>
+        <field name="ten">An</field>
+        <field name="email">an.phan@example.com</field>
+        <field name="ngay_sinh">1996-08-20</field>
+    </record>
+
+    <record id="project_nifty_sample_nhan_vien_developer" model="nhan_vien">
+        <field name="ma_dinh_danh">NV-PM-DEV</field>
+        <field name="ho_ten_dem">Tran Van</field>
+        <field name="ten">Binh</field>
+        <field name="email">binh.tran@example.com</field>
+        <field name="ngay_sinh">1998-02-11</field>
+    </record>
+
+    <record id="project_nifty_sample_project_main" model="project.nifty">
+        <field name="name">Du an trien khai CRM noi bo</field>
+        <field name="description">Du lieu mau cho module quan ly du an: task board, tai lieu va tep dinh kem.</field>
+        <field name="team_id" ref="project_nifty_team_cn_a"/>
+        <field name="department_manager_id" ref="project_nifty_nv_010"/>
+        <field name="manager_id" ref="project_nifty_nv_001"/>
+        <field name="member_ids" eval="[(6, 0, [ref('project_nifty_nv_002'), ref('project_nifty_nv_003')])]"/>
+        <field name="start_date">2026-03-01</field>
+        <field name="end_date">2026-06-30</field>
+        <field name="status">in_progress</field>
+    </record>
+
+    <record id="project_nifty_sample_list_backlog" model="project.nifty.tasklist">
+        <field name="name">Backlog</field>
+        <field name="sequence">10</field>
+        <field name="project_id" ref="project_nifty_sample_project_main"/>
+    </record>
+
+    <record id="project_nifty_sample_list_in_progress" model="project.nifty.tasklist">
+        <field name="name">Dang thuc hien</field>
+        <field name="sequence">20</field>
+        <field name="project_id" ref="project_nifty_sample_project_main"/>
+    </record>
+
+    <record id="project_nifty_sample_list_review" model="project.nifty.tasklist">
+        <field name="name">Can duyet</field>
+        <field name="sequence">30</field>
+        <field name="project_id" ref="project_nifty_sample_project_main"/>
+    </record>
+
+    <record id="project_nifty_sample_list_done" model="project.nifty.tasklist">
+        <field name="name">Hoan thanh</field>
+        <field name="sequence">40</field>
+        <field name="project_id" ref="project_nifty_sample_project_main"/>
+    </record>
+
+    <record id="project_nifty_sample_task_1" model="project.nifty.task">
+        <field name="name">Khao sat quy trinh hien tai</field>
+        <field name="description">Tong hop pain points va lap danh sach yeu cau uu tien.</field>
+        <field name="project_id" ref="project_nifty_sample_project_main"/>
+        <field name="tasklist_id" ref="project_nifty_sample_list_done"/>
+        <field name="assigned_ids" eval="[(6, 0, [ref('project_nifty_nv_002')])]"/>
+        <field name="deadline">2026-03-10</field>
+        <field name="priority">2</field>
+        <field name="status">approved</field>
+    </record>
+
+    <record id="project_nifty_sample_task_2" model="project.nifty.task">
+        <field name="name">Dung mockup man hinh lead</field>
+        <field name="description">Thiet ke trang danh sach lead va thong tin chi tiet.</field>
+        <field name="project_id" ref="project_nifty_sample_project_main"/>
+        <field name="tasklist_id" ref="project_nifty_sample_list_in_progress"/>
+        <field name="assigned_ids" eval="[(6, 0, [ref('project_nifty_nv_003')])]"/>
+        <field name="deadline">2026-03-25</field>
+        <field name="priority">3</field>
+        <field name="status">in_progress</field>
+    </record>
+
+    <record id="project_nifty_sample_task_3" model="project.nifty.task">
+        <field name="name">Viet checklist kiem thu</field>
+        <field name="description">Xac dinh test case cho luong tao co hoi va bao cao.</field>
+        <field name="project_id" ref="project_nifty_sample_project_main"/>
+        <field name="tasklist_id" ref="project_nifty_sample_list_review"/>
+        <field name="assigned_ids" eval="[(6, 0, [ref('project_nifty_nv_002')])]"/>
+        <field name="deadline">2026-03-29</field>
+        <field name="priority">1</field>
+        <field name="status">ready_review</field>
+    </record>
+
+    <record id="project_nifty_sample_task_4" model="project.nifty.task">
+        <field name="name">Chuan bi tai lieu huong dan su dung</field>
+        <field name="description">Soan huong dan nhanh cho nguoi dung kinh doanh.</field>
+        <field name="project_id" ref="project_nifty_sample_project_main"/>
+        <field name="tasklist_id" ref="project_nifty_sample_list_backlog"/>
+        <field name="assigned_ids" eval="[(6, 0, [ref('project_nifty_nv_003')])]"/>
+        <field name="deadline">2026-04-05</field>
+        <field name="priority">0</field>
+        <field name="status">todo</field>
+    </record>
+
+    <record id="project_nifty_sample_document_1" model="project.nifty.document">
+        <field name="name">Muc tieu va pham vi</field>
+        <field name="project_id" ref="project_nifty_sample_project_main"/>
+        <field name="content"><![CDATA[
+            <h2>Du an CRM noi bo</h2>
+            <p>Muc tieu la chuan hoa quy trinh ban hang va theo doi pipeline theo thoi gian thuc.</p>
+            <ul>
+                <li>Thong nhat du lieu lead</li>
+                <li>Rut ngan thoi gian chot co hoi</li>
+                <li>Day du bao cao KPI cho quan ly</li>
+            </ul>
+        ]]></field>
+    </record>
+
+    <record id="project_nifty_sample_file_1" model="project.nifty.file">
+        <field name="name">ghi-chu-trien-khai.txt</field>
+        <field name="project_id" ref="project_nifty_sample_project_main"/>
+        <field name="file">RHVsaWV1IG1hdSBjaG8gUHJvamVjdCBOaWZ0eS4=</field>
+    </record>
+</odoo>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_project_nifty_root" name="Project Management" sequence="10" groups="base.group_system,project_nifty.group_project_nifty_department_manager,project_nifty.group_project_nifty_team_leader,project_nifty.group_project_nifty_team_member"/>
+
+    <menuitem id="menu_project_nifty_projects" name="Projects" parent="menu_project_nifty_root" action="project_nifty.action_project_nifty_projects" sequence="10"/>
+    <menuitem id="menu_project_nifty_teams" name="Teams" parent="menu_project_nifty_root" action="project_nifty.action_project_nifty_teams" sequence="15"/>
+    <menuitem id="menu_project_nifty_tasklists" name="Task Lists" parent="menu_project_nifty_root" action="project_nifty.action_project_nifty_tasklists" sequence="20"/>
+    <menuitem id="menu_project_nifty_tasks" name="Tasks" parent="menu_project_nifty_root" action="project_nifty.action_project_nifty_tasks" sequence="30"/>
+    <menuitem id="menu_project_nifty_documents" name="Documents" parent="menu_project_nifty_root" action="project_nifty.action_project_nifty_documents" sequence="40"/>
+    <menuitem id="menu_project_nifty_files" name="Files" parent="menu_project_nifty_root" action="project_nifty.action_project_nifty_files" sequence="50"/>
+</odoo>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="project_nifty_demo_nhan_vien_admin" model="nhan_vien">
+        <field name="ma_dinh_danh">PN-DEMO-ADMIN</field>
+        <field name="ho_ten_dem">Quan tri</field>
+        <field name="ten">He thong</field>
+        <field name="email">admin@example.com</field>
+        <field name="ngay_sinh">1990-01-01</field>
+        <field name="user_id" ref="base.user_admin"/>
+    </record>
+
+    <record id="project_nifty_demo_nhan_vien_demo" model="nhan_vien">
+        <field name="ma_dinh_danh">PN-DEMO-USER</field>
+        <field name="ho_ten_dem">Demo</field>
+        <field name="ten">User</field>
+        <field name="email">demo@example.com</field>
+        <field name="ngay_sinh">1995-01-01</field>
+        <field name="user_id" ref="base.user_demo"/>
+    </record>
+
+    <record id="project_nifty_demo_main" model="project.nifty">
+        <field name="name">Website Revamp Q2</field>
+        <field name="description">Demo workspace for Project Nifty module with task board, docs and files.</field>
+        <field name="team_id" ref="project_nifty_team_cn_a"/>
+        <field name="department_manager_id" ref="project_nifty_nv_010"/>
+        <field name="manager_id" ref="project_nifty_nv_001"/>
+        <field name="member_ids" eval="[(6, 0, [ref('project_nifty_nv_002'), ref('project_nifty_nv_003')])]"/>
+        <field name="start_date">2026-03-01</field>
+        <field name="end_date">2026-06-30</field>
+        <field name="status">in_progress</field>
+    </record>
+
+    <record id="project_nifty_demo_list_backlog" model="project.nifty.tasklist">
+        <field name="name">Backlog</field>
+        <field name="sequence">10</field>
+        <field name="project_id" ref="project_nifty_demo_main"/>
+    </record>
+
+    <record id="project_nifty_demo_list_building" model="project.nifty.tasklist">
+        <field name="name">Building</field>
+        <field name="sequence">20</field>
+        <field name="project_id" ref="project_nifty_demo_main"/>
+    </record>
+
+    <record id="project_nifty_demo_list_review" model="project.nifty.tasklist">
+        <field name="name">Review</field>
+        <field name="sequence">30</field>
+        <field name="project_id" ref="project_nifty_demo_main"/>
+    </record>
+
+    <record id="project_nifty_demo_list_done" model="project.nifty.tasklist">
+        <field name="name">Done</field>
+        <field name="sequence">40</field>
+        <field name="project_id" ref="project_nifty_demo_main"/>
+    </record>
+
+    <record id="project_nifty_demo_task_1" model="project.nifty.task">
+        <field name="name">Define homepage sections</field>
+        <field name="description">Split content into hero, trust, feature blocks and CTA.</field>
+        <field name="project_id" ref="project_nifty_demo_main"/>
+        <field name="tasklist_id" ref="project_nifty_demo_list_done"/>
+        <field name="assigned_ids" eval="[(6, 0, [ref('project_nifty_nv_002')])]"/>
+        <field name="deadline">2026-03-12</field>
+        <field name="priority">2</field>
+        <field name="status">approved</field>
+    </record>
+
+    <record id="project_nifty_demo_task_2" model="project.nifty.task">
+        <field name="name">Build responsive navbar</field>
+        <field name="description">Implement desktop/mobile menu and smooth section navigation.</field>
+        <field name="project_id" ref="project_nifty_demo_main"/>
+        <field name="tasklist_id" ref="project_nifty_demo_list_building"/>
+        <field name="assigned_ids" eval="[(6, 0, [ref('project_nifty_nv_003')])]"/>
+        <field name="deadline">2026-03-27</field>
+        <field name="priority">3</field>
+        <field name="status">in_progress</field>
+    </record>
+
+    <record id="project_nifty_demo_task_3" model="project.nifty.task">
+        <field name="name">Prepare launch checklist</field>
+        <field name="description">Document QA, tracking setup and pre-launch review points.</field>
+        <field name="project_id" ref="project_nifty_demo_main"/>
+        <field name="tasklist_id" ref="project_nifty_demo_list_review"/>
+        <field name="assigned_ids" eval="[(6, 0, [ref('project_nifty_nv_001')])]"/>
+        <field name="deadline">2026-03-31</field>
+        <field name="priority">1</field>
+        <field name="status">ready_review</field>
+    </record>
+
+    <record id="project_nifty_demo_document_1" model="project.nifty.document">
+        <field name="name">Project Brief</field>
+        <field name="project_id" ref="project_nifty_demo_main"/>
+        <field name="content"><![CDATA[
+            <h2>Website Revamp Q2</h2>
+            <p>This project delivers a modern marketing website with better conversion flow.</p>
+            <ul>
+                <li>Improve mobile performance</li>
+                <li>Polish visual hierarchy</li>
+                <li>Measure CTA conversion</li>
+            </ul>
+        ]]></field>
+    </record>
+
+    <record id="project_nifty_demo_file_1" model="project.nifty.file">
+        <field name="name">wireframe-notes.txt</field>
+        <field name="project_id" ref="project_nifty_demo_main"/>
+        <field name="file">V2lyZWZyYW1lIG5vdGVzIGZvciBkZW1vIHByb2plY3Qu</field>
+    </record>
+</odoo>

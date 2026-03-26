@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_nifty_team_search" model="ir.ui.view">
+        <field name="name">project.nifty.team.search</field>
+        <field name="model">project.nifty.team</field>
+        <field name="arch" type="xml">
+            <search string="Nhom">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="don_vi_id"/>
+                <field name="leader_id"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_project_nifty_team_tree" model="ir.ui.view">
+        <field name="name">project.nifty.team.tree</field>
+        <field name="model">project.nifty.team</field>
+        <field name="arch" type="xml">
+            <tree string="Nhom">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="don_vi_id"/>
+                <field name="leader_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_project_nifty_team_form" model="ir.ui.view">
+        <field name="name">project.nifty.team.form</field>
+        <field name="model">project.nifty.team</field>
+        <field name="arch" type="xml">
+            <form string="Nhom">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="don_vi_id"/>
+                        </group>
+                        <group>
+                            <field name="leader_id"/>
+                        </group>
+                    </group>
+                    <group string="Thanh vien nhom">
+                        <field name="member_employee_ids" widget="many2many_tags"/>
+                    </group>
+                    <group string="Danh sach thanh vien">
+                        <field name="member_ids" readonly="1">
+                            <tree>
+                                <field name="ma_dinh_danh"/>
+                                <field name="ho_va_ten"/>
+                                <field name="email"/>
+                                <field name="project_is_team_lead"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_project_nifty_teams" model="ir.actions.act_window">
+        <field name="name">Nhom</field>
+        <field name="res_model">project.nifty.team</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_project_nifty_team_search"/>
+    </record>
+</odoo>

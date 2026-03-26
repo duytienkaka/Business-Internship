@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="project_nifty_global_ai_chat_templates" xml:space="preserve">
+    <t t-name="project_nifty.GlobalAIChat">
+        <div class="project_nifty_ai_chat_root" role="complementary" aria-label="AI Chat Assistant">
+            <button class="project_nifty_ai_chat_toggle" type="button" aria-expanded="false" title="Mo dong tro ly AI">
+                <i class="fa fa-comments" title="AI Chat"/>
+            </button>
+            <div class="project_nifty_ai_chat_panel" style="display: none;">
+                <div class="project_nifty_ai_chat_header">
+                    <div class="project_nifty_ai_chat_title">Project Nifty AI</div>
+                    <button type="button" class="project_nifty_ai_chat_clear" title="Xoa doan chat">Clear</button>
+                </div>
+                <div class="project_nifty_ai_chat_status">San sang</div>
+                <div class="project_nifty_ai_chat_body"/>
+                <div class="project_nifty_ai_chat_footer">
+                    <textarea class="project_nifty_ai_chat_input" rows="2" placeholder="Nhap noi dung va nhan Enter..."/>
+                    <button type="button" class="project_nifty_ai_chat_send">Send</button>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="project_nifty.GlobalAIChatMessages">
+        <div class="project_nifty_ai_chat_messages">
+            <t t-if="!messages.length">
+                <div class="project_nifty_ai_chat_empty">Chao ban! Minh la tro ly GPT-2, ban can ho tro gi?</div>
+            </t>
+            <t t-foreach="messages" t-as="msg">
+                <div t-attf-class="project_nifty_ai_chat_message #{msg.role === 'user' ? 'is-user' : 'is-assistant'}">
+                    <div class="project_nifty_ai_chat_message_role">
+                        <t t-esc="msg.role === 'user' ? 'Ban' : 'AI'"/>
+                    </div>
+                    <div class="project_nifty_ai_chat_message_text">
+                        <t t-esc="msg.content"/>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

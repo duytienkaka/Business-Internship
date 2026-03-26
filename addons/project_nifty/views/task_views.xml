@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_nifty_task_search" model="ir.ui.view">
+        <field name="name">project.nifty.task.search</field>
+        <field name="model">project.nifty.task</field>
+        <field name="arch" type="xml">
+            <search string="Tasks">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="project_team_id"/>
+                <field name="tasklist_id"/>
+                <field name="assigned_ids"/>
+                <field name="ai_feedback_state"/>
+                <separator/>
+                <filter name="task_today" string="Today" domain="[('deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="task_my" string="Assigned to Me" domain="[('assigned_ids.user_id', '=', uid)]"/>
+                <filter name="task_todo" string="Todo" domain="[('status', '=', 'todo')]"/>
+                <filter name="task_in_progress" string="In Progress" domain="[('status', '=', 'in_progress')]"/>
+                <filter name="task_review" string="Ready for Review" domain="[('status', '=', 'ready_review')]"/>
+                <filter name="task_approved" string="Approved" domain="[('status', '=', 'approved')]"/>
+                <filter name="task_rejected" string="Rejected" domain="[('status', '=', 'rejected')]"/>
+                <filter name="task_overdue" string="Overdue" domain="[('deadline', '&lt;', context_today().strftime('%Y-%m-%d')), ('status', 'not in', ['approved'])]"/>
+                <separator/>
+                <filter name="group_by_tasklist" string="Task List" context="{'group_by': 'tasklist_id'}"/>
+                <filter name="group_by_project" string="Project" context="{'group_by': 'project_id'}"/>
+                <filter name="group_by_feedback_state" string="AI Feedback" context="{'group_by': 'ai_feedback_state'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_project_nifty_task_tree" model="ir.ui.view">
+        <field name="name">project.nifty.task.tree</field>
+        <field name="model">project.nifty.task</field>
+        <field name="arch" type="xml">
+            <tree string="Tasks" decoration-danger="is_overdue">
+                <field name="is_overdue" invisible="1"/>
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="project_team_id"/>
+                <field name="tasklist_id"/>
+                <field name="assigned_ids" widget="many2many_tags"/>
+                <field name="deadline"/>
+                <field name="priority"/>
+                <field name="status" widget="badge"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_project_nifty_task_kanban" model="ir.ui.view">
+        <field name="name">project.nifty.task.kanban</field>
+        <field name="model">project.nifty.task</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile project_nifty_task_kanban" default_group_by="project_id" quick_create="1" records_draggable="1">
+                <progressbar field="status" colors='{"todo": "warning", "in_progress": "info", "ready_review": "primary", "approved": "success", "rejected": "danger"}'/>
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="project_color"/>
+                <field name="tasklist_id"/>
+                <field name="assigned_ids"/>
+                <field name="project_member_ids"/>
+                <field name="deadline"/>
+                <field name="priority"/>
+                <field name="status"/>
+                <field name="is_team_leader_user"/>
+                <field name="can_submit_review"/>
+                <field name="is_overdue"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record project_nifty_task_card">
+                            <div class="o_kanban_record_top">
+                                <strong><field name="name"/></strong>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <div class="mb-1">
+                                    <span t-attf-class="badge rounded-pill project_nifty_project_badge o_tag_color_#{record.project_color.raw_value or 0}">
+                                        <field name="project_id"/>
+                                    </span>
+                                </div>
+                                <div class="mb-1 project_nifty_meta_assignees">
+                                    <field name="assigned_ids" widget="many2many_tags"/>
+                                </div>
+                                <div class="mb-1 project_nifty_meta_tasklist">
+                                    <span class="me-2">Task List:</span>
+                                    <field name="tasklist_id"/>
+                                </div>
+                                <div class="mb-1">
+                                    <span class="me-2">Deadline:</span>
+                                    <field name="deadline"/>
+                                    <span t-if="record.is_overdue.raw_value" class="badge rounded-pill text-bg-danger ms-2">Overdue</span>
+                                </div>
+                                <div class="mb-1 project_nifty_meta_priority">
+                                    <span t-if="record.priority.raw_value == '3'" class="badge rounded-pill text-bg-danger">Critical</span>
+                                    <span t-if="record.priority.raw_value == '2'" class="badge rounded-pill text-bg-warning">High</span>
+                                    <span t-if="record.priority.raw_value == '1'" class="badge rounded-pill text-bg-info">Medium</span>
+                                    <span t-if="record.priority.raw_value == '0'" class="badge rounded-pill text-bg-secondary">Low</span>
+                                </div>
+                                <div>
+                                    <field name="status" widget="badge"/>
+                                </div>
+                                <div class="mt-2 project_nifty_task_actions">
+                                    <button t-if="record.can_submit_review.raw_value and record.status.raw_value in ('todo', 'in_progress', 'rejected')" name="action_submit_for_review" type="object" class="btn btn-sm btn-outline-primary"><i class="fa fa-paper-plane me-1"/>Submit Review</button>
+                                    <button t-if="record.is_team_leader_user.raw_value and record.status.raw_value == 'ready_review'" name="action_approve_task" type="object" class="btn btn-sm btn-outline-success"><i class="fa fa-check me-1"/>Approve</button>
+                                    <button t-if="record.is_team_leader_user.raw_value and record.status.raw_value == 'ready_review'" name="action_reject_task" type="object" class="btn btn-sm btn-outline-danger"><i class="fa fa-times me-1"/>Reject</button>
+                                    <button name="action_open_project_task_board" type="object" class="btn btn-link p-0"><i class="fa fa-columns me-1"/>Open Project Board</button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_project_nifty_task_form" model="ir.ui.view">
+        <field name="name">project.nifty.task.form</field>
+        <field name="model">project.nifty.task</field>
+        <field name="arch" type="xml">
+            <form string="Task">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_submit_for_review" type="object" class="oe_stat_button" icon="fa-check-circle" string="Submit Review" attrs="{'invisible': ['|', ('is_team_leader_user', '=', True), ('status', '=', 'ready_review')]}"/>
+                        <button name="action_approve_task" type="object" class="oe_stat_button" icon="fa-check" string="Approve" attrs="{'invisible': ['|', ('is_team_leader_user', '=', False), ('status', '!=', 'ready_review')]}"/>
+                        <button name="action_reject_task" type="object" class="oe_stat_button" icon="fa-times" string="Reject" attrs="{'invisible': ['|', ('is_team_leader_user', '=', False), ('status', '!=', 'ready_review')]}"/>
+                        <button name="action_ai_suggest_assignees" type="object" class="oe_stat_button" icon="fa-magic" string="AI Suggest Assignees" attrs="{'invisible': [('is_team_leader_user', '=', False)]}"/>
+                        <button name="action_ai_apply_suggested_assignees" type="object" class="oe_stat_button" icon="fa-users" string="Apply AI Assignees" attrs="{'invisible': ['|', ('is_team_leader_user', '=', False), ('ai_suggested_assignee_ids', '=', [])]}"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="is_team_leader_user" invisible="1"/>
+                            <field name="ai_suggested_assignee_ids" invisible="1"/>
+                            <field name="name"/>
+                            <field name="project_id"/>
+                            <field name="project_team_id" readonly="1"/>
+                            <field name="project_member_ids" invisible="1"/>
+                            <field name="tasklist_id" domain="[('project_id', '=', project_id)]"/>
+                            <field name="assigned_ids" widget="many2many_tags" domain="[('id', 'in', project_member_ids)]"/>
+                        </group>
+                        <group>
+                            <field name="deadline"/>
+                            <field name="priority"/>
+                            <field name="status"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                    <group string="AI Assignment Suggestion" attrs="{'invisible': [('is_team_leader_user', '=', False)]}">
+                        <field name="ai_feedback_state" readonly="1"/>
+                        <field name="ai_suggested_assignee_ids" widget="many2many_tags" readonly="1"/>
+                        <field name="ai_assignment_risk_warning" nolabel="1" readonly="1" attrs="{'invisible': [('ai_assignment_risk_warning', '=', False)]}"/>
+                        <field name="ai_feedback_summary" nolabel="1" readonly="1" attrs="{'invisible': [('ai_feedback_summary', '=', False)]}"/>
+                        <field name="ai_assignment_recommendation" nolabel="1" readonly="1" placeholder="Nhan AI Suggest Assignees de tao goi y giao viec..."/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_project_nifty_tasks" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">project.nifty.task</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="view_project_nifty_task_search"/>
+        <field name="context">{'search_default_group_by_project': 1}</field>
+    </record>
+</odoo>

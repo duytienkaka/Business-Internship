@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_nifty_tasklist_search" model="ir.ui.view">
+        <field name="name">project.nifty.tasklist.search</field>
+        <field name="model">project.nifty.tasklist</field>
+        <field name="arch" type="xml">
+            <search string="Task Lists">
+                <field name="name"/>
+                <field name="project_id"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_project_nifty_tasklist_tree" model="ir.ui.view">
+        <field name="name">project.nifty.tasklist.tree</field>
+        <field name="model">project.nifty.tasklist</field>
+        <field name="arch" type="xml">
+            <tree string="Task Lists">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="approved_task_count"/>
+                <field name="total_task_count"/>
+                <field name="progress" widget="progressbar"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_project_nifty_tasklist_kanban" model="ir.ui.view">
+        <field name="name">project.nifty.tasklist.kanban</field>
+        <field name="model">project.nifty.tasklist</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile project_nifty_list_kanban project_nifty_tasklist_kanban" default_group_by="project_id" quick_create="1">
+                <field name="name"/>
+                <field name="sequence"/>
+                <field name="project_id"/>
+                <field name="total_task_count"/>
+                <field name="approved_task_count"/>
+                <field name="progress"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record project_nifty_list_card">
+                            <div class="o_kanban_record_top">
+                                <strong><i class="fa fa-list-ul me-2" title="Task list"/> <field name="name"/></strong>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <div class="mb-1"><field name="project_id"/></div>
+                                <div class="mb-1"><span class="badge rounded-pill text-bg-success me-2"><field name="approved_task_count"/></span>Approved / <field name="total_task_count"/> Tasks</div>
+                                <div><field name="progress" widget="progressbar"/></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_project_nifty_tasklist_form" model="ir.ui.view">
+        <field name="name">project.nifty.tasklist.form</field>
+        <field name="model">project.nifty.tasklist</field>
+        <field name="arch" type="xml">
+            <form string="Task List">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="project_id"/>
+                        <field name="project_member_ids" invisible="1"/>
+                        <field name="sequence"/>
+                        <field name="progress" widget="progressbar" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="task_ids" context="{'default_tasklist_id': id, 'default_project_id': project_id, 'from_tasklist_form': 1}">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="project_member_ids" invisible="1"/>
+                                <field name="assigned_ids" widget="many2many_tags" domain="[('id', 'in', parent.project_member_ids)]"/>
+                                <field name="deadline"/>
+                                <field name="priority"/>
+                                <field name="status" widget="badge"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_project_nifty_tasklists" model="ir.actions.act_window">
+        <field name="name">Task Lists</field>
+        <field name="res_model">project.nifty.tasklist</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="view_project_nifty_tasklist_search"/>
+    </record>
+</odoo>

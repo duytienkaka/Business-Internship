@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_nifty_document_search" model="ir.ui.view">
+        <field name="name">project.nifty.document.search</field>
+        <field name="model">project.nifty.document</field>
+        <field name="arch" type="xml">
+            <search string="Documents">
+                <field name="name"/>
+                <field name="project_id"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_project_nifty_document_tree" model="ir.ui.view">
+        <field name="name">project.nifty.document.tree</field>
+        <field name="model">project.nifty.document</field>
+        <field name="arch" type="xml">
+            <tree string="Documents">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="create_uid"/>
+                <field name="write_uid"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_project_nifty_document_kanban" model="ir.ui.view">
+        <field name="name">project.nifty.document.kanban</field>
+        <field name="model">project.nifty.document</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile project_nifty_doc_kanban" quick_create="1">
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="create_uid"/>
+                <field name="write_uid"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record project_nifty_doc_card">
+                            <div class="o_kanban_record_top">
+                                <strong><field name="name"/></strong>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <div class="mb-1"><field name="project_id"/></div>
+                                <div class="mb-1">Created by: <field name="create_uid"/></div>
+                                <div>Last updated by: <field name="write_uid"/></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_project_nifty_document_form" model="ir.ui.view">
+        <field name="name">project.nifty.document.form</field>
+        <field name="model">project.nifty.document</field>
+        <field name="arch" type="xml">
+            <form string="Document">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="project_id"/>
+                    </group>
+                    <group>
+                        <field name="content" widget="html"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_project_nifty_documents" model="ir.actions.act_window">
+        <field name="name">Documents</field>
+        <field name="res_model">project.nifty.document</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="view_project_nifty_document_search"/>
+    </record>
+</odoo>
