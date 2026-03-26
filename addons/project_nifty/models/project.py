@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+from html import escape
 
 from odoo import models, fields, api, _
 from odoo.exceptions import AccessError, ValidationError
@@ -31,12 +32,17 @@ class ProjectNifty(models.Model):
     start_date = fields.Date('Start Date')
     end_date = fields.Date('End Date')
     status = fields.Selection([
-        ('not_started', 'Not Started'),
-        ('in_progress', 'In Progress'),
-        ('pending_approval', 'Pending Approval'),
-        ('finished', 'Finished'),
-        ('cancelled', 'Cancelled'),
-    ], string='Status', default='in_progress', tracking=True)
+        ('not_started', 'Đang chuẩn bị'),
+        ('in_progress', 'Đang thực hiện'),
+        ('pending_approval', 'Chờ duyệt hoàn thành'),
+        ('finished', 'Hoàn thành'),
+        ('cancelled', 'Đã hủy'),
+    ], string='Trạng thái', default='in_progress', tracking=True)
+    deadline_warning_sent_for = fields.Date(
+        'Project Deadline Warning Sent For',
+        help='Date marker to avoid sending duplicated 3-day project deadline warnings.',
+        copy=False,
+    )
 
     progress = fields.Float('Progress (%)', compute='_compute_progress', store=True)
 
@@ -62,6 +68,12 @@ class ProjectNifty(models.Model):
     ai_feedback_week_accepted_count = fields.Integer('AI Weekly Accepted', compute='_compute_dashboard', store=True)
     ai_feedback_week_override_count = fields.Integer('AI Weekly Override', compute='_compute_dashboard', store=True)
     ai_feedback_week_acceptance_rate = fields.Float('AI Weekly Acceptance Rate (%)', compute='_compute_dashboard', store=True)
+    ai_benchmark_latest_accuracy = fields.Float('AI Benchmark Accuracy (%)', compute='_compute_ai_benchmark_overview')
+    ai_benchmark_latest_status = fields.Selection([
+        ('healthy', 'Healthy'),
+        ('degraded', 'Degraded'),
+        ('no_data', 'No Data'),
+    ], string='AI Benchmark Status', compute='_compute_ai_benchmark_overview')
 
     tasklist_ids = fields.One2many('project.nifty.tasklist', 'project_id', string='Task Lists')
     task_ids = fields.One2many('project.nifty.task', 'project_id', string='Tasks')
@@ -205,6 +217,13 @@ class ProjectNifty(models.Model):
             'context': {'default_project_id': self.id},
         }
 
+    def _compute_ai_benchmark_overview(self):
+        Log = self.env['project.nifty.ai.benchmark.log'].sudo()
+        for project in self:
+            latest = Log.search([('project_id', '=', project.id)], order='run_at desc, id desc', limit=1)
+            project.ai_benchmark_latest_accuracy = latest.accuracy if latest else 0.0
+            project.ai_benchmark_latest_status = latest.status if latest else 'no_data'
+
     @api.model_create_multi
     def create(self, vals_list):
         if self._skip_role_checks():
@@ -220,7 +239,7 @@ class ProjectNifty(models.Model):
                 current_employee = self._get_current_nhan_vien(create_if_missing=True)
                 vals['department_manager_id'] = current_employee.id if current_employee else False
             if not vals.get('department_manager_id'):
-                raise ValidationError(_('Khong the tu dong gan Department Manager. Vui long lien he Admin de kiem tra du lieu nhan_vien.'))
+                raise ValidationError(_('Không thể tự động gán Department Manager. Vui lòng liên hệ Admin để kiểm tra dữ liệu nhân_viên.'))
 
             team = False
             team_id = vals.get('team_id')
@@ -331,6 +350,17 @@ class ProjectNifty(models.Model):
             },
         }
 
+    def action_open_ai_benchmark_logs(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('AI Benchmark Trend'),
+            'res_model': 'project.nifty.ai.benchmark.log',
+            'view_mode': 'graph,tree,form',
+            'domain': [('project_id', '=', self.id)],
+            'context': {'default_project_id': self.id},
+        }
+
     def action_submit_completion_request(self):
         for rec in self:
             if not rec._current_is_team_leader():
@@ -340,6 +370,7 @@ class ProjectNifty(models.Model):
             if rec.task_ids and any(task.status != 'approved' for task in rec.task_ids):
                 raise ValidationError(_('All tasks must be Approved before submitting project completion request.'))
             rec.sudo().with_context(allow_team_leader_submit_completion=True).write({'status': 'pending_approval'})
+            rec._send_completion_submitted_notification()
         return True
 
     def action_department_manager_finish(self):
@@ -347,7 +378,121 @@ class ProjectNifty(models.Model):
             if not rec._current_is_department_manager():
                 raise AccessError(_('Only Department Manager can finalize project as Finished.'))
             rec.write({'status': 'finished'})
+            rec._send_completion_confirmed_notification()
         return True
+
+    def cron_send_project_deadline_warning_emails(self):
+        today = fields.Date.context_today(self)
+        warning_date = today + timedelta(days=3)
+        projects = self.search([
+            ('end_date', '=', warning_date),
+            ('status', 'in', ['not_started', 'in_progress', 'pending_approval']),
+            '|',
+            ('deadline_warning_sent_for', '=', False),
+            ('deadline_warning_sent_for', '!=', warning_date),
+        ])
+        projects._send_project_deadline_warning_email(warning_date)
+        return True
+
+    def _project_form_url(self):
+        self.ensure_one()
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url', '').rstrip('/')
+        action = self.env.ref('project_nifty.action_project_nifty_projects', raise_if_not_found=False)
+        if not base_url or not action:
+            return ''
+        return '%s/web#id=%s&model=project.nifty&view_type=form&action=%s' % (base_url, self.id, action.id)
+
+    def _send_project_deadline_warning_email(self, warning_date):
+        mail_obj = self.env['mail.mail'].sudo()
+        for rec in self:
+            if rec.status in ('finished', 'cancelled'):
+                continue
+            unfinished_tasks = rec.task_ids.filtered(lambda t: t.status != 'approved')
+            if not unfinished_tasks:
+                continue
+
+            recipients = sorted({email for email in [rec.manager_id.email] if email})
+            if not recipients:
+                continue
+
+            body_html = [
+                '<p>Xin chào Team Leader,</p>',
+                '<p>Project <strong>%s</strong> còn <strong>3 ngày</strong> sẽ đến hạn (%s) nhưng vẫn còn task chưa hoàn tất.</p>' % (
+                    escape(rec.name or ''),
+                    escape(str(rec.end_date or warning_date)),
+                ),
+                '<ul>',
+                '<li><strong>Tổng task:</strong> %s</li>' % len(rec.task_ids),
+                '<li><strong>Task chưa approved:</strong> %s</li>' % len(unfinished_tasks),
+                '</ul>',
+            ]
+            project_url = rec._project_form_url()
+            if project_url:
+                body_html.append('<p><a href="%s">Mở project để xử lý ngay</a></p>' % project_url)
+
+            mail_obj.create({
+                'subject': '[Project Nifty] Cảnh báo sắp đến hạn: "%s"' % (rec.name or 'N/A'),
+                'body_html': ''.join(body_html),
+                'email_to': ','.join(recipients),
+                'auto_delete': False,
+            }).send()
+            rec.sudo().write({'deadline_warning_sent_for': warning_date})
+
+    def _send_completion_submitted_notification(self):
+        mail_obj = self.env['mail.mail'].sudo()
+        for rec in self:
+            recipients = sorted({email for email in [rec.department_manager_id.email] if email})
+            if not recipients:
+                continue
+
+            body_html = [
+                '<p>Xin chào Department Manager,</p>',
+                '<p>Team Leader đã gửi yêu cầu xác nhận hoàn thành cho project <strong>%s</strong>.</p>' % escape(rec.name or ''),
+                '<ul>',
+                '<li><strong>Team Leader:</strong> %s</li>' % escape(rec.manager_id.ho_va_ten or ''),
+                '<li><strong>Trạng thái hiện tại:</strong> Pending Approval</li>',
+                '</ul>',
+            ]
+            project_url = rec._project_form_url()
+            if project_url:
+                body_html.append('<p><a href="%s">Mở project để phê duyệt</a></p>' % project_url)
+
+            mail_obj.create({
+                'subject': '[Project Nifty] Yêu cầu phê duyệt hoàn thành project: "%s"' % (rec.name or 'N/A'),
+                'body_html': ''.join(body_html),
+                'email_to': ','.join(recipients),
+                'auto_delete': False,
+            }).send()
+
+    def _send_completion_confirmed_notification(self):
+        mail_obj = self.env['mail.mail'].sudo()
+        for rec in self:
+            recipient_candidates = [rec.manager_id.email] + rec.member_ids.mapped('email')
+            recipients = sorted({email for email in recipient_candidates if email})
+            if not recipients:
+                continue
+
+            manager_name = rec.department_manager_id.ho_va_ten or self.env.user.name or 'Department Manager'
+            body_html = [
+                '<p>Xin chào,</p>',
+                '<p>Department Manager <strong>%s</strong> đã xác nhận hoàn thành project <strong>%s</strong>.</p>' % (
+                    escape(manager_name),
+                    escape(rec.name or ''),
+                ),
+                '<ul>',
+                '<li><strong>Trạng thái mới:</strong> Finished</li>',
+                '</ul>',
+            ]
+            project_url = rec._project_form_url()
+            if project_url:
+                body_html.append('<p><a href="%s">Mở project</a></p>' % project_url)
+
+            mail_obj.create({
+                'subject': '[Project Nifty] Project hoàn thành: "%s"' % (rec.name or 'N/A'),
+                'body_html': ''.join(body_html),
+                'email_to': ','.join(recipients),
+                'auto_delete': False,
+            }).send()
 
     def action_department_manager_cancel(self):
         for rec in self:

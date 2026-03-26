@@ -9,11 +9,11 @@
                 <field name="department_manager_id"/>
                 <field name="manager_id"/>
                 <field name="member_ids"/>
-                <filter name="status_not_started" string="Not Started" domain="[('status', '=', 'not_started')]"/>
-                <filter name="status_in_progress" string="In Progress" domain="[('status', '=', 'in_progress')]"/>
-                <filter name="status_pending_approval" string="Pending Approval" domain="[('status', '=', 'pending_approval')]"/>
-                <filter name="status_finished" string="Finished" domain="[('status', '=', 'finished')]"/>
-                <filter name="status_cancelled" string="Cancelled" domain="[('status', '=', 'cancelled')]"/>
+                <filter name="status_not_started" string="Đang chuẩn bị" domain="[('status', '=', 'not_started')]"/>
+                <filter name="status_in_progress" string="Đang thực hiện" domain="[('status', '=', 'in_progress')]"/>
+                <filter name="status_pending_approval" string="Chờ duyệt hoàn thành" domain="[('status', '=', 'pending_approval')]"/>
+                <filter name="status_finished" string="Hoàn thành" domain="[('status', '=', 'finished')]"/>
+                <filter name="status_cancelled" string="Đã hủy" domain="[('status', '=', 'cancelled')]"/>
             </search>
         </field>
     </record>
@@ -95,7 +95,7 @@
                     <field name="is_team_leader_user" invisible="1"/>
                     <field name="can_submit_completion_request" invisible="1"/>
                     <button name="action_submit_completion_request" type="object" string="Submit Completion Request" class="btn-primary" attrs="{'invisible': ['|', ('can_submit_completion_request', '=', False), ('status', 'in', ('pending_approval', 'finished', 'cancelled'))]}"/>
-                    <button name="action_department_manager_finish" type="object" string="Xac nhan hoan thanh" class="btn-success" attrs="{'invisible': ['|', ('is_department_manager_user', '=', False), ('status', '!=', 'pending_approval')]}"/>
+                    <button name="action_department_manager_finish" type="object" string="Xác nhận hoàn thành" class="btn-success" attrs="{'invisible': ['|', ('is_department_manager_user', '=', False), ('status', '!=', 'pending_approval')]}"/>
                     <button name="action_department_manager_cancel" type="object" string="Cancel Project" class="btn-danger" attrs="{'invisible': [('is_department_manager_user', '=', False)]}"/>
                     <field name="status" widget="statusbar" statusbar_visible="not_started,in_progress,pending_approval,finished,cancelled" attrs="{'readonly': ['&amp;', ('id', '!=', False), ('is_department_manager_user', '=', False)]}"/>
                 </header>
@@ -129,6 +129,12 @@
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value"><field name="ai_feedback_total_count"/></span>
                                 <span class="o_stat_text">AI Feedback</span>
+                            </div>
+                        </button>
+                        <button type="object" name="action_open_ai_benchmark_logs" class="oe_stat_button" icon="fa-area-chart">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value"><field name="ai_benchmark_latest_accuracy"/></span>
+                                <span class="o_stat_text">AI Benchmark %</span>
                             </div>
                         </button>
                         <button type="object" name="action_open_task_board" class="oe_stat_button" icon="fa-columns" string="Task Board"/>
@@ -301,6 +307,10 @@
                                         <span class="project_nifty_kpi_label">AI Weekly Override</span>
                                         <field name="ai_feedback_week_override_count" readonly="1" class="project_nifty_kpi_value"/>
                                     </div>
+                                    <div class="project_nifty_kpi_card">
+                                        <span class="project_nifty_kpi_label">AI Benchmark Accuracy</span>
+                                        <field name="ai_benchmark_latest_accuracy" readonly="1" class="project_nifty_kpi_value"/>
+                                    </div>
                                 </div>
                                 <group>
                                     <group>
@@ -323,6 +333,7 @@
                                         <field name="start_date" readonly="1"/>
                                         <field name="end_date" readonly="1"/>
                                         <field name="status" readonly="1" widget="badge"/>
+                                        <field name="ai_benchmark_latest_status" readonly="1" widget="badge"/>
                                         <field name="ai_feedback_acceptance_rate" readonly="1" widget="progressbar"/>
                                         <field name="ai_feedback_week_acceptance_rate" readonly="1" widget="progressbar"/>
                                     </group>

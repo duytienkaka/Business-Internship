@@ -99,6 +99,12 @@
     padding: 12px;
 }
 
+.project_nifty_dashboard .o_group .o_field_widget,
+.project_nifty_dashboard .o_group .o_form_label,
+.project_nifty_dashboard .o_group .o_td_label {
+    color: #1e3950;
+}
+
 .project_nifty_kpi_grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -159,6 +165,25 @@
     margin-top: 6px;
 }
 
+.project_nifty_list_kanban .o_kanban_group,
+.project_nifty_tasklist_kanban .o_kanban_group,
+.project_nifty_task_kanban .o_kanban_group,
+.project_nifty_kanban .o_kanban_group,
+.project_nifty_doc_kanban .o_kanban_group,
+.project_nifty_file_kanban .o_kanban_group {
+    margin-right: 10px;
+    margin-bottom: 12px;
+}
+
+.project_nifty_list_kanban .o_kanban_record,
+.project_nifty_tasklist_kanban .o_kanban_record,
+.project_nifty_task_kanban .o_kanban_record,
+.project_nifty_kanban .o_kanban_record,
+.project_nifty_doc_kanban .o_kanban_record,
+.project_nifty_file_kanban .o_kanban_record {
+    margin-bottom: 10px;
+}
+
 .project_nifty_form .project_nifty_list_card .badge,
 .project_nifty_form .project_nifty_doc_card .badge,
 .project_nifty_form .project_nifty_file_card .badge {
@@ -173,6 +198,16 @@
     .project_nifty_list_kanban .project_nifty_list_card {
         padding: 10px;
         border-radius: 10px;
+    }
+
+    .project_nifty_list_kanban .o_kanban_group,
+    .project_nifty_tasklist_kanban .o_kanban_group,
+    .project_nifty_task_kanban .o_kanban_group,
+    .project_nifty_kanban .o_kanban_group,
+    .project_nifty_doc_kanban .o_kanban_group,
+    .project_nifty_file_kanban .o_kanban_group {
+        margin-right: 0;
+        margin-bottom: 14px;
     }
 
     .project_nifty_tasklist_kanban .project_nifty_list_card .o_kanban_record_top strong,
@@ -399,5 +434,21 @@
         height: 52px;
         font-size: 22px;
     }
+}
+
+.o_project_nifty_task_form .project_nifty_ai_metrics_block,
+.o_project_nifty_task_form .project_nifty_ai_metrics_block .o_field_html,
+.o_project_nifty_task_form .project_nifty_ai_metrics_block .o_field_html .table-responsive,
+.project_nifty_form .project_nifty_ai_metrics_block,
+.project_nifty_form .project_nifty_ai_metrics_block .o_field_html,
+.project_nifty_form .project_nifty_ai_metrics_block .o_field_html .table-responsive {
+    width: 100%;
+    max-width: 100%;
+}
+
+.o_project_nifty_task_form .project_nifty_ai_metrics_block table,
+.project_nifty_form .project_nifty_ai_metrics_block table {
+    width: 100%;
+    min-width: 100%;
 }
 

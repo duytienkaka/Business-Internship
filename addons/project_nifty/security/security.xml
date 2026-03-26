@@ -90,7 +90,7 @@
         <field name="name">Document - Department Manager Access</field>
         <field name="model_id" ref="model_project_nifty_document"/>
         <field name="groups" eval="[(4, ref('project_nifty.group_project_nifty_department_manager'))]"/>
-        <field name="domain_force">[('project_id.department_manager_id.user_id', '=', user.id)]</field>
+        <field name="domain_force">['|', ('project_id.department_manager_id.user_id', '=', user.id), ('project_id.create_uid', '=', user.id)]</field>
     </record>
 
     <record id="project_nifty_rule_document_team_leader" model="ir.rule">
@@ -111,7 +111,7 @@
         <field name="name">File - Department Manager Access</field>
         <field name="model_id" ref="model_project_nifty_file"/>
         <field name="groups" eval="[(4, ref('project_nifty.group_project_nifty_department_manager'))]"/>
-        <field name="domain_force">[('project_id.department_manager_id.user_id', '=', user.id)]</field>
+        <field name="domain_force">['|', ('project_id.department_manager_id.user_id', '=', user.id), ('project_id.create_uid', '=', user.id)]</field>
     </record>
 
     <record id="project_nifty_rule_file_team_leader" model="ir.rule">
@@ -124,6 +124,27 @@
     <record id="project_nifty_rule_file_team_member" model="ir.rule">
         <field name="name">File - Team Member Access</field>
         <field name="model_id" ref="model_project_nifty_file"/>
+        <field name="groups" eval="[(4, ref('project_nifty.group_project_nifty_team_member'))]"/>
+        <field name="domain_force">[('project_id.member_ids.user_id', '=', user.id)]</field>
+    </record>
+
+    <record id="project_nifty_rule_ai_benchmark_log_department_manager" model="ir.rule">
+        <field name="name">AI Benchmark Log - Department Manager Access</field>
+        <field name="model_id" ref="model_project_nifty_ai_benchmark_log"/>
+        <field name="groups" eval="[(4, ref('project_nifty.group_project_nifty_department_manager'))]"/>
+        <field name="domain_force">[('project_id.department_manager_id.user_id', '=', user.id)]</field>
+    </record>
+
+    <record id="project_nifty_rule_ai_benchmark_log_team_leader" model="ir.rule">
+        <field name="name">AI Benchmark Log - Team Leader Access</field>
+        <field name="model_id" ref="model_project_nifty_ai_benchmark_log"/>
+        <field name="groups" eval="[(4, ref('project_nifty.group_project_nifty_team_leader'))]"/>
+        <field name="domain_force">[('project_id.manager_id.user_id', '=', user.id)]</field>
+    </record>
+
+    <record id="project_nifty_rule_ai_benchmark_log_team_member" model="ir.rule">
+        <field name="name">AI Benchmark Log - Team Member Access</field>
+        <field name="model_id" ref="model_project_nifty_ai_benchmark_log"/>
         <field name="groups" eval="[(4, ref('project_nifty.group_project_nifty_team_member'))]"/>
         <field name="domain_force">[('project_id.member_ids.user_id', '=', user.id)]</field>
     </record>
@@ -160,6 +181,13 @@
     <record id="project_nifty_rule_file_admin" model="ir.rule">
         <field name="name">Project Nifty - Admin File Access</field>
         <field name="model_id" ref="model_project_nifty_file"/>
+        <field name="groups" eval="[(4, ref('base.group_system'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="project_nifty_rule_ai_benchmark_log_admin" model="ir.rule">
+        <field name="name">Project Nifty - Admin AI Benchmark Log Access</field>
+        <field name="model_id" ref="model_project_nifty_ai_benchmark_log"/>
         <field name="groups" eval="[(4, ref('base.group_system'))]"/>
         <field name="domain_force">[(1, '=', 1)]</field>
     </record>

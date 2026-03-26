@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mail_template_project_nifty_task_deadline_reminder" model="mail.template">
+        <field name="name">Project Nifty Task Deadline Reminder</field>
+        <field name="model_id" ref="project_nifty.model_project_nifty_task"/>
+        <field name="subject">[Project Nifty] Nhắc việc: ${object.name} sắp đến hạn</field>
+        <field name="email_from">${object.project_id.manager_id.email or user.email or 'noreply@example.com'}</field>
+        <field name="body_html" type="html">
+            <div>
+                <p>Xin chào,</p>
+                <p>Task <strong>${object.name}</strong> sẽ đến hạn sau 1 ngày và hiện chưa ở trạng thái xác nhận hoàn thành.</p>
+                <ul>
+                    <li><strong>Project:</strong> ${object.project_id.name or ''}</li>
+                    <li><strong>Task list:</strong> ${object.tasklist_id.name or ''}</li>
+                    <li><strong>Hạn chót:</strong> ${object.deadline or ''}</li>
+                    <li><strong>Trạng thái hiện tại:</strong> ${object.status or ''}</li>
+                    <li><strong>Người được giao:</strong> ${', '.join(object.assigned_ids.mapped('ho_va_ten')) or 'Chưa có'}</li>
+                    <li><strong>Team Leader:</strong> ${object.project_id.manager_id.ho_va_ten or ''}</li>
+                </ul>
+                <p><a href="${ctx.get('task_url') or ''}">Mở task trong hệ thống</a></p>
+                <p>Vui lòng cập nhật tiến độ hoặc chuyển task sang trạng thái Ready for Review khi đã hoàn thành.</p>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+</odoo>

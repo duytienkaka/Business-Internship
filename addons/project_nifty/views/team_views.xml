@@ -4,7 +4,7 @@
         <field name="name">project.nifty.team.search</field>
         <field name="model">project.nifty.team</field>
         <field name="arch" type="xml">
-            <search string="Nhom">
+            <search string="Nhóm">
                 <field name="name"/>
                 <field name="code"/>
                 <field name="don_vi_id"/>
@@ -17,7 +17,7 @@
         <field name="name">project.nifty.team.tree</field>
         <field name="model">project.nifty.team</field>
         <field name="arch" type="xml">
-            <tree string="Nhom">
+            <tree string="Nhóm">
                 <field name="code"/>
                 <field name="name"/>
                 <field name="don_vi_id"/>
@@ -30,7 +30,7 @@
         <field name="name">project.nifty.team.form</field>
         <field name="model">project.nifty.team</field>
         <field name="arch" type="xml">
-            <form string="Nhom">
+            <form string="Nhóm">
                 <sheet>
                     <group>
                         <group>
@@ -42,10 +42,10 @@
                             <field name="leader_id"/>
                         </group>
                     </group>
-                    <group string="Thanh vien nhom">
+                    <group string="Thành viên nhóm">
                         <field name="member_employee_ids" widget="many2many_tags"/>
                     </group>
-                    <group string="Danh sach thanh vien">
+                    <group string="Danh sách thành viên">
                         <field name="member_ids" readonly="1">
                             <tree>
                                 <field name="ma_dinh_danh"/>
@@ -61,7 +61,7 @@
     </record>
 
     <record id="action_project_nifty_teams" model="ir.actions.act_window">
-        <field name="name">Nhom</field>
+        <field name="name">Nhóm</field>
         <field name="res_model">project.nifty.team</field>
         <field name="view_mode">tree,form</field>
         <field name="search_view_id" ref="view_project_nifty_team_search"/>

@@ -60,7 +60,8 @@
                 <sheet>
                     <group>
                         <field name="name"/>
-                        <field name="project_id"/>
+                        <field name="available_project_ids" invisible="1"/>
+                        <field name="project_id" domain="[('id', 'in', available_project_ids)]"/>
                         <field name="uploaded_by" readonly="1"/>
                         <field name="upload_date" readonly="1"/>
                     </group>

@@ -4,5 +4,7 @@ from . import task
 from . import document
 from . import file
 from . import gpt_chat
+from . import settings
+from . import ai_benchmark_log
 from . import team
 from . import nhan_vien_link

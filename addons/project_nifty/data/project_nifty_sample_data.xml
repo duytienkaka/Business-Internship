@@ -2,8 +2,8 @@
 <odoo noupdate="1">
     <record id="project_nifty_sample_nhan_vien_admin" model="nhan_vien">
         <field name="ma_dinh_danh">NV-PM-ADMIN</field>
-        <field name="ho_ten_dem">Quan tri</field>
-        <field name="ten">He thong</field>
+        <field name="ho_ten_dem">Quản trị</field>
+        <field name="ten">Hệ thống</field>
         <field name="email">admin@example.com</field>
         <field name="ngay_sinh">1990-05-15</field>
         <field name="user_id" ref="base.user_admin"/>
@@ -11,7 +11,7 @@
 
     <record id="project_nifty_sample_nhan_vien_analyst" model="nhan_vien">
         <field name="ma_dinh_danh">NV-PM-BA</field>
-        <field name="ho_ten_dem">Nguyen Thi</field>
+        <field name="ho_ten_dem">Nguyễn Thị</field>
         <field name="ten">An</field>
         <field name="email">an.phan@example.com</field>
         <field name="ngay_sinh">1996-08-20</field>
@@ -19,15 +19,15 @@
 
     <record id="project_nifty_sample_nhan_vien_developer" model="nhan_vien">
         <field name="ma_dinh_danh">NV-PM-DEV</field>
-        <field name="ho_ten_dem">Tran Van</field>
+        <field name="ho_ten_dem">Trần Văn</field>
         <field name="ten">Binh</field>
         <field name="email">binh.tran@example.com</field>
         <field name="ngay_sinh">1998-02-11</field>
     </record>
 
     <record id="project_nifty_sample_project_main" model="project.nifty">
-        <field name="name">Du an trien khai CRM noi bo</field>
-        <field name="description">Du lieu mau cho module quan ly du an: task board, tai lieu va tep dinh kem.</field>
+        <field name="name">Dự án triển khai CRM nội bộ</field>
+        <field name="description">Dữ liệu mẫu cho module quản lý dự án: task board, tài liệu và tệp đính kèm.</field>
         <field name="team_id" ref="project_nifty_team_cn_a"/>
         <field name="department_manager_id" ref="project_nifty_nv_010"/>
         <field name="manager_id" ref="project_nifty_nv_001"/>
@@ -44,26 +44,26 @@
     </record>
 
     <record id="project_nifty_sample_list_in_progress" model="project.nifty.tasklist">
-        <field name="name">Dang thuc hien</field>
+        <field name="name">Đang thực hiện</field>
         <field name="sequence">20</field>
         <field name="project_id" ref="project_nifty_sample_project_main"/>
     </record>
 
     <record id="project_nifty_sample_list_review" model="project.nifty.tasklist">
-        <field name="name">Can duyet</field>
+        <field name="name">Cần duyệt</field>
         <field name="sequence">30</field>
         <field name="project_id" ref="project_nifty_sample_project_main"/>
     </record>
 
     <record id="project_nifty_sample_list_done" model="project.nifty.tasklist">
-        <field name="name">Hoan thanh</field>
+        <field name="name">Hoàn thành</field>
         <field name="sequence">40</field>
         <field name="project_id" ref="project_nifty_sample_project_main"/>
     </record>
 
     <record id="project_nifty_sample_task_1" model="project.nifty.task">
-        <field name="name">Khao sat quy trinh hien tai</field>
-        <field name="description">Tong hop pain points va lap danh sach yeu cau uu tien.</field>
+        <field name="name">Khảo sát quy trình hiện tại</field>
+        <field name="description">Tổng hợp pain points và lập danh sách yêu cầu ưu tiên.</field>
         <field name="project_id" ref="project_nifty_sample_project_main"/>
         <field name="tasklist_id" ref="project_nifty_sample_list_done"/>
         <field name="assigned_ids" eval="[(6, 0, [ref('project_nifty_nv_002')])]"/>
@@ -73,8 +73,8 @@
     </record>
 
     <record id="project_nifty_sample_task_2" model="project.nifty.task">
-        <field name="name">Dung mockup man hinh lead</field>
-        <field name="description">Thiet ke trang danh sach lead va thong tin chi tiet.</field>
+        <field name="name">Dựng mockup màn hình lead</field>
+        <field name="description">Thiết kế trang danh sách lead và thông tin chi tiết.</field>
         <field name="project_id" ref="project_nifty_sample_project_main"/>
         <field name="tasklist_id" ref="project_nifty_sample_list_in_progress"/>
         <field name="assigned_ids" eval="[(6, 0, [ref('project_nifty_nv_003')])]"/>
@@ -84,8 +84,8 @@
     </record>
 
     <record id="project_nifty_sample_task_3" model="project.nifty.task">
-        <field name="name">Viet checklist kiem thu</field>
-        <field name="description">Xac dinh test case cho luong tao co hoi va bao cao.</field>
+        <field name="name">Viết checklist kiểm thử</field>
+        <field name="description">Xác định test case cho luồng tạo cơ hội và báo cáo.</field>
         <field name="project_id" ref="project_nifty_sample_project_main"/>
         <field name="tasklist_id" ref="project_nifty_sample_list_review"/>
         <field name="assigned_ids" eval="[(6, 0, [ref('project_nifty_nv_002')])]"/>
@@ -95,8 +95,8 @@
     </record>
 
     <record id="project_nifty_sample_task_4" model="project.nifty.task">
-        <field name="name">Chuan bi tai lieu huong dan su dung</field>
-        <field name="description">Soan huong dan nhanh cho nguoi dung kinh doanh.</field>
+        <field name="name">Chuẩn bị tài liệu hướng dẫn sử dụng</field>
+        <field name="description">Soạn hướng dẫn nhanh cho người dùng kinh doanh.</field>
         <field name="project_id" ref="project_nifty_sample_project_main"/>
         <field name="tasklist_id" ref="project_nifty_sample_list_backlog"/>
         <field name="assigned_ids" eval="[(6, 0, [ref('project_nifty_nv_003')])]"/>
@@ -106,15 +106,15 @@
     </record>
 
     <record id="project_nifty_sample_document_1" model="project.nifty.document">
-        <field name="name">Muc tieu va pham vi</field>
+        <field name="name">Mục tiêu và phạm vi</field>
         <field name="project_id" ref="project_nifty_sample_project_main"/>
         <field name="content"><![CDATA[
-            <h2>Du an CRM noi bo</h2>
-            <p>Muc tieu la chuan hoa quy trinh ban hang va theo doi pipeline theo thoi gian thuc.</p>
+            <h2>Dự án CRM nội bộ</h2>
+            <p>Mục tiêu là chuẩn hóa quy trình bán hàng và theo dõi pipeline theo thời gian thực.</p>
             <ul>
-                <li>Thong nhat du lieu lead</li>
-                <li>Rut ngan thoi gian chot co hoi</li>
-                <li>Day du bao cao KPI cho quan ly</li>
+                <li>Thống nhất dữ liệu lead</li>
+                <li>Rút ngắn thời gian chốt cơ hội</li>
+                <li>Đầy đủ báo cáo KPI cho quản lý</li>
             </ul>
         ]]></field>
     </record>

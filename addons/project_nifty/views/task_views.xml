@@ -14,11 +14,11 @@
                 <separator/>
                 <filter name="task_today" string="Today" domain="[('deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
                 <filter name="task_my" string="Assigned to Me" domain="[('assigned_ids.user_id', '=', uid)]"/>
-                <filter name="task_todo" string="Todo" domain="[('status', '=', 'todo')]"/>
-                <filter name="task_in_progress" string="In Progress" domain="[('status', '=', 'in_progress')]"/>
-                <filter name="task_review" string="Ready for Review" domain="[('status', '=', 'ready_review')]"/>
-                <filter name="task_approved" string="Approved" domain="[('status', '=', 'approved')]"/>
-                <filter name="task_rejected" string="Rejected" domain="[('status', '=', 'rejected')]"/>
+                <filter name="task_todo" string="Đang chuẩn bị" domain="[('status', '=', 'todo')]"/>
+                <filter name="task_in_progress" string="Đang làm" domain="[('status', '=', 'in_progress')]"/>
+                <filter name="task_review" string="Chờ duyệt" domain="[('status', '=', 'ready_review')]"/>
+                <filter name="task_approved" string="Đã duyệt" domain="[('status', '=', 'approved')]"/>
+                <filter name="task_rejected" string="Bị từ chối" domain="[('status', '=', 'rejected')]"/>
                 <filter name="task_overdue" string="Overdue" domain="[('deadline', '&lt;', context_today().strftime('%Y-%m-%d')), ('status', 'not in', ['approved'])]"/>
                 <separator/>
                 <filter name="group_by_tasklist" string="Task List" context="{'group_by': 'tasklist_id'}"/>
@@ -116,6 +116,9 @@
         <field name="model">project.nifty.task</field>
         <field name="arch" type="xml">
             <form string="Task">
+                <header>
+                    <field name="status" widget="statusbar" statusbar_visible="todo,in_progress,ready_review,approved,rejected"/>
+                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_submit_for_review" type="object" class="oe_stat_button" icon="fa-check-circle" string="Submit Review" attrs="{'invisible': ['|', ('is_team_leader_user', '=', True), ('status', '=', 'ready_review')]}"/>
@@ -123,6 +126,7 @@
                         <button name="action_reject_task" type="object" class="oe_stat_button" icon="fa-times" string="Reject" attrs="{'invisible': ['|', ('is_team_leader_user', '=', False), ('status', '!=', 'ready_review')]}"/>
                         <button name="action_ai_suggest_assignees" type="object" class="oe_stat_button" icon="fa-magic" string="AI Suggest Assignees" attrs="{'invisible': [('is_team_leader_user', '=', False)]}"/>
                         <button name="action_ai_apply_suggested_assignees" type="object" class="oe_stat_button" icon="fa-users" string="Apply AI Assignees" attrs="{'invisible': ['|', ('is_team_leader_user', '=', False), ('ai_suggested_assignee_ids', '=', [])]}"/>
+                        <button name="action_send_deadline_reminder_now" type="object" class="oe_stat_button" icon="fa-envelope" string="Send Reminder Now" attrs="{'invisible': ['|', ('is_team_leader_user', '=', False), ('deadline', '=', False)]}"/>
                     </div>
                     <group>
                         <group>
@@ -134,11 +138,11 @@
                             <field name="project_member_ids" invisible="1"/>
                             <field name="tasklist_id" domain="[('project_id', '=', project_id)]"/>
                             <field name="assigned_ids" widget="many2many_tags" domain="[('id', 'in', project_member_ids)]"/>
+                            <button name="action_ai_suggest_assignees" type="object" string="AI Suggest Now" class="btn-secondary" attrs="{'invisible': ['|', ('is_team_leader_user', '=', False), ('project_id', '=', False)]}"/>
                         </group>
                         <group>
                             <field name="deadline"/>
                             <field name="priority"/>
-                            <field name="status"/>
                         </group>
                     </group>
                     <group>
@@ -147,9 +151,11 @@
                     <group string="AI Assignment Suggestion" attrs="{'invisible': [('is_team_leader_user', '=', False)]}">
                         <field name="ai_feedback_state" readonly="1"/>
                         <field name="ai_suggested_assignee_ids" widget="many2many_tags" readonly="1"/>
-                        <field name="ai_assignment_risk_warning" nolabel="1" readonly="1" attrs="{'invisible': [('ai_assignment_risk_warning', '=', False)]}"/>
-                        <field name="ai_feedback_summary" nolabel="1" readonly="1" attrs="{'invisible': [('ai_feedback_summary', '=', False)]}"/>
-                        <field name="ai_assignment_recommendation" nolabel="1" readonly="1" placeholder="Nhan AI Suggest Assignees de tao goi y giao viec..."/>
+                        <field name="ai_assignment_risk_warning" nolabel="1" readonly="1" attrs="{'invisible': [('ai_assignment_risk_warning', '=', False)]}" colspan="4"/>
+                        <field name="ai_assignment_metrics_html" widget="html" nolabel="1" readonly="1" class="project_nifty_ai_metrics_block" colspan="4" attrs="{'invisible': [('ai_assignment_metrics_html', '=', False)]}"/>
+                        <field name="ai_assignment_score_breakdown" nolabel="1" readonly="1" attrs="{'invisible': [('ai_assignment_score_breakdown', '=', False)]}" invisible="1"/>
+                        <field name="ai_feedback_summary" nolabel="1" readonly="1" colspan="4" attrs="{'invisible': [('ai_feedback_summary', '=', False)]}"/>
+                        <field name="ai_assignment_recommendation" nolabel="1" readonly="1" colspan="4" placeholder="Nhan AI Suggest Assignees de tao goi y giao viec..."/>
                     </group>
                 </sheet>
                 <chatter/>

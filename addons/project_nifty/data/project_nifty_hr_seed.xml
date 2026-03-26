@@ -2,96 +2,96 @@
 <odoo noupdate="1">
     <record id="project_nifty_don_vi_cn" model="don_vi">
         <field name="ma_don_vi">DV-CN</field>
-        <field name="ten_don_vi">Phong Cong nghe</field>
+        <field name="ten_don_vi">Phòng Công nghệ</field>
     </record>
     <record id="project_nifty_don_vi_kd" model="don_vi">
         <field name="ma_don_vi">DV-KD</field>
-        <field name="ten_don_vi">Phong Kinh doanh</field>
+        <field name="ten_don_vi">Phòng Kinh doanh</field>
     </record>
     <record id="project_nifty_don_vi_vh" model="don_vi">
         <field name="ma_don_vi">DV-VH</field>
-        <field name="ten_don_vi">Phong Van hanh</field>
+        <field name="ten_don_vi">Phòng Vận hành</field>
     </record>
 
     <record id="project_nifty_chuc_vu_tl" model="chuc_vu">
         <field name="ma_chuc_vu">CV-TL</field>
-        <field name="ten_chuc_vu">Truong nhom</field>
+        <field name="ten_chuc_vu">Trưởng nhóm</field>
     </record>
     <record id="project_nifty_chuc_vu_cv" model="chuc_vu">
         <field name="ma_chuc_vu">CV-CV</field>
-        <field name="ten_chuc_vu">Chuyen vien</field>
+        <field name="ten_chuc_vu">Chuyên viên</field>
     </record>
     <record id="project_nifty_chuc_vu_nv" model="chuc_vu">
         <field name="ma_chuc_vu">CV-NV</field>
-        <field name="ten_chuc_vu">Nhan vien</field>
+        <field name="ten_chuc_vu">Nhân viên</field>
     </record>
 
     <record id="project_nifty_nv_001" model="nhan_vien">
         <field name="ma_dinh_danh">PNNV001</field>
-        <field name="ho_ten_dem">Nguyen Van</field>
+        <field name="ho_ten_dem">Nguyễn Văn</field>
         <field name="ten">An</field>
         <field name="ngay_sinh">1992-04-15</field>
         <field name="email">pnnv001@example.com</field>
     </record>
     <record id="project_nifty_nv_002" model="nhan_vien">
         <field name="ma_dinh_danh">PNNV002</field>
-        <field name="ho_ten_dem">Tran Thi</field>
+        <field name="ho_ten_dem">Trần Thị</field>
         <field name="ten">Binh</field>
         <field name="ngay_sinh">1993-06-12</field>
         <field name="email">pnnv002@example.com</field>
     </record>
     <record id="project_nifty_nv_003" model="nhan_vien">
         <field name="ma_dinh_danh">PNNV003</field>
-        <field name="ho_ten_dem">Le Hoang</field>
+        <field name="ho_ten_dem">Lê Hoàng</field>
         <field name="ten">Chi</field>
         <field name="ngay_sinh">1994-03-08</field>
         <field name="email">pnnv003@example.com</field>
     </record>
     <record id="project_nifty_nv_004" model="nhan_vien">
         <field name="ma_dinh_danh">PNNV004</field>
-        <field name="ho_ten_dem">Pham Minh</field>
-        <field name="ten">Dung</field>
+        <field name="ho_ten_dem">Phạm Minh</field>
+        <field name="ten">Dũng</field>
         <field name="ngay_sinh">1995-01-20</field>
         <field name="email">pnnv004@example.com</field>
     </record>
     <record id="project_nifty_nv_005" model="nhan_vien">
         <field name="ma_dinh_danh">PNNV005</field>
-        <field name="ho_ten_dem">Vu Quoc</field>
+        <field name="ho_ten_dem">Vũ Quốc</field>
         <field name="ten">Giang</field>
         <field name="ngay_sinh">1991-10-03</field>
         <field name="email">pnnv005@example.com</field>
     </record>
     <record id="project_nifty_nv_006" model="nhan_vien">
         <field name="ma_dinh_danh">PNNV006</field>
-        <field name="ho_ten_dem">Do Thi</field>
-        <field name="ten">Ha</field>
+        <field name="ho_ten_dem">Đỗ Thị</field>
+        <field name="ten">Hà</field>
         <field name="ngay_sinh">1996-07-19</field>
         <field name="email">pnnv006@example.com</field>
     </record>
     <record id="project_nifty_nv_007" model="nhan_vien">
         <field name="ma_dinh_danh">PNNV007</field>
-        <field name="ho_ten_dem">Bui Anh</field>
-        <field name="ten">Khanh</field>
+        <field name="ho_ten_dem">Bùi Anh</field>
+        <field name="ten">Khánh</field>
         <field name="ngay_sinh">1997-05-09</field>
         <field name="email">pnnv007@example.com</field>
     </record>
     <record id="project_nifty_nv_008" model="nhan_vien">
         <field name="ma_dinh_danh">PNNV008</field>
-        <field name="ho_ten_dem">Dang Duc</field>
+        <field name="ho_ten_dem">Đặng Đức</field>
         <field name="ten">Long</field>
         <field name="ngay_sinh">1992-11-28</field>
         <field name="email">pnnv008@example.com</field>
     </record>
     <record id="project_nifty_nv_009" model="nhan_vien">
         <field name="ma_dinh_danh">PNNV009</field>
-        <field name="ho_ten_dem">Ngo Thi</field>
+        <field name="ho_ten_dem">Ngô Thị</field>
         <field name="ten">My</field>
         <field name="ngay_sinh">1995-09-14</field>
         <field name="email">pnnv009@example.com</field>
     </record>
     <record id="project_nifty_nv_010" model="nhan_vien">
         <field name="ma_dinh_danh">PNNV010</field>
-        <field name="ho_ten_dem">Hoang Gia</field>
+        <field name="ho_ten_dem">Hoàng Gia</field>
         <field name="ten">Nam</field>
         <field name="ngay_sinh">1993-12-02</field>
         <field name="email">pnnv010@example.com</field>
@@ -99,19 +99,19 @@
 
     <record id="project_nifty_team_cn_a" model="project.nifty.team">
         <field name="code">TEAM-CN-A</field>
-        <field name="name">Nhom Cong nghe A</field>
+        <field name="name">Nhóm Công nghệ A</field>
         <field name="don_vi_id" ref="project_nifty_don_vi_cn"/>
         <field name="leader_id" ref="project_nifty_nv_001"/>
     </record>
     <record id="project_nifty_team_cn_b" model="project.nifty.team">
         <field name="code">TEAM-CN-B</field>
-        <field name="name">Nhom Cong nghe B</field>
+        <field name="name">Nhóm Công nghệ B</field>
         <field name="don_vi_id" ref="project_nifty_don_vi_cn"/>
         <field name="leader_id" ref="project_nifty_nv_004"/>
     </record>
     <record id="project_nifty_team_kd_a" model="project.nifty.team">
         <field name="code">TEAM-KD-A</field>
-        <field name="name">Nhom Kinh doanh A</field>
+        <field name="name">Nhóm Kinh doanh A</field>
         <field name="don_vi_id" ref="project_nifty_don_vi_kd"/>
         <field name="leader_id" ref="project_nifty_nv_007"/>
     </record>

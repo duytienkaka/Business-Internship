@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_nifty_ai_benchmark_log_tree" model="ir.ui.view">
+        <field name="name">project.nifty.ai.benchmark.log.tree</field>
+        <field name="model">project.nifty.ai.benchmark.log</field>
+        <field name="arch" type="xml">
+            <tree string="AI Benchmark Logs" create="0" edit="0" delete="0">
+                <field name="run_at"/>
+                <field name="project_id"/>
+                <field name="status" widget="badge"/>
+                <field name="accuracy"/>
+                <field name="min_accuracy"/>
+                <field name="hit_count"/>
+                <field name="checked_count"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_project_nifty_ai_benchmark_log_graph" model="ir.ui.view">
+        <field name="name">project.nifty.ai.benchmark.log.graph</field>
+        <field name="model">project.nifty.ai.benchmark.log</field>
+        <field name="arch" type="xml">
+            <graph string="AI Benchmark Accuracy Trend" type="line">
+                <field name="run_at" interval="day"/>
+                <field name="accuracy" type="measure"/>
+                <field name="project_id" type="row"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_project_nifty_ai_benchmark_log_form" model="ir.ui.view">
+        <field name="name">project.nifty.ai.benchmark.log.form</field>
+        <field name="model">project.nifty.ai.benchmark.log</field>
+        <field name="arch" type="xml">
+            <form string="AI Benchmark Log" create="0" edit="0" delete="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="run_at"/>
+                            <field name="project_id"/>
+                            <field name="status"/>
+                        </group>
+                        <group>
+                            <field name="accuracy"/>
+                            <field name="min_accuracy"/>
+                            <field name="hit_count"/>
+                            <field name="checked_count"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_project_nifty_ai_benchmark_logs" model="ir.actions.act_window">
+        <field name="name">AI Benchmark Trend</field>
+        <field name="res_model">project.nifty.ai.benchmark.log</field>
+        <field name="view_mode">graph,tree,form</field>
+    </record>
+</odoo>

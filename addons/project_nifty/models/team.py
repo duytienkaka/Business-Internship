@@ -6,41 +6,45 @@ from odoo.exceptions import ValidationError
 
 class ProjectNiftyTeam(models.Model):
     _name = 'project.nifty.team'
-    _description = 'Nhom phong ban cho Project Nifty'
+    _description = 'Nhóm phòng ban cho Project Nifty'
     _order = 'name'
 
-    name = fields.Char('Ten nhom', required=True)
-    code = fields.Char('Ma nhom', required=True)
+    name = fields.Char('Tên nhóm', required=True)
+    code = fields.Char('Mã nhóm', required=True)
     don_vi_id = fields.Many2one('don_vi', string='Phong ban', required=True)
-    leader_id = fields.Many2one('nhan_vien', string='Nhom truong', required=True)
-    member_ids = fields.One2many('nhan_vien', 'project_team_id', string='Thanh vien')
+    leader_id = fields.Many2one('nhan_vien', string='Nhóm trưởng', required=True)
+    member_ids = fields.One2many('nhan_vien', 'project_team_id', string='Thành viên')
     member_employee_ids = fields.Many2many(
         'nhan_vien',
-        string='Thanh vien team',
+        string='Thành viên team',
         compute='_compute_member_employee_ids',
         inverse='_inverse_member_employee_ids',
     )
 
     _sql_constraints = [
-        ('project_nifty_team_code_unique', 'unique(code)', 'Ma nhom phai la duy nhat.'),
-        ('project_nifty_team_leader_unique', 'unique(leader_id)', 'Moi truong nhom chi duoc quan ly 1 nhom.'),
+        ('project_nifty_team_code_unique', 'unique(code)', 'Mã nhóm phải là duy nhất.'),
+        ('project_nifty_team_leader_unique', 'unique(leader_id)', 'Mỗi trưởng nhóm chỉ được quản lý 1 nhóm.'),
     ]
 
     @api.model_create_multi
     def create(self, vals_list):
         records = super().create(vals_list)
         records._sync_leader_membership()
+        (records.mapped('leader_id') | records.mapped('member_ids'))._sync_project_role_groups()
         return records
 
     def write(self, vals):
+        impacted_employees = self.mapped('leader_id') | self.mapped('member_ids') # type: ignore
         result = super().write(vals)
         self._sync_leader_membership()
+        impacted_employees |= self.mapped('leader_id') | self.mapped('member_ids') # type: ignore
+        impacted_employees._sync_project_role_groups() # type: ignore
         return result
 
     def _sync_leader_membership(self):
         for team in self:
-            if team.leader_id and team.leader_id.project_team_id != team:
-                team.leader_id.project_team_id = team.id
+            if team.leader_id and team.leader_id.project_team_id != team: # type: ignore
+                team.leader_id.project_team_id = team.id # type: ignore
 
     @api.depends('member_ids')
     def _compute_member_employee_ids(self):
@@ -82,11 +86,11 @@ class ProjectNiftyTeam(models.Model):
             if not conflicts:
                 continue
 
-            lines = ['- %s (dang o team: %s)' % (name, from_team) for name, from_team in conflicts]
+            lines = ['- %s (đang ở team: %s)' % (name, from_team) for name, from_team in conflicts]
             return {
                 'warning': {
-                    'title': _('Xac nhan chuyen thanh vien'),
-                    'message': _('Cac nhan vien sau dang thuoc team khac:\n%s\n\nBam Luu de xac nhan chuyen sang team nay.') % '\n'.join(lines),
+                    'title': _('Xác nhận chuyển thành viên'),
+                    'message': _('Các nhân viên sau đang thuộc team khác:\n%s\n\nBấm Lưu để xác nhận chuyển sang team này.') % '\n'.join(lines),
                 }
             }
 
@@ -101,7 +105,7 @@ class ProjectNiftyTeam(models.Model):
                 ('leader_id', '=', team.leader_id.id),
             ], limit=1)
             if duplicate_team:
-                raise ValidationError(_('Moi truong nhom chi duoc quan ly 1 nhom.'))
+                raise ValidationError(_('Mỗi trưởng nhóm chỉ được quản lý 1 nhóm.'))
 
     @api.model
     def seed_hr_org_data(self):
@@ -123,9 +127,9 @@ class ProjectNiftyTeam(models.Model):
             department_records[code] = rec
 
         positions = {
-            'CV-TL': 'Truong nhom',
+            'CV-TL': 'Trưởng nhóm',
             'CV-CV': 'Chuyen vien',
-            'CV-NV': 'Nhan vien',
+            'CV-NV': 'Nhân viên',
         }
         position_records = {}
         for code, name in positions.items():
@@ -149,10 +153,10 @@ class ProjectNiftyTeam(models.Model):
 
         rng = Random(20260324)
         team_defs = [
-            ('TEAM-CN-A', 'Nhom Cong nghe A', 'DV-CN'),
-            ('TEAM-CN-B', 'Nhom Cong nghe B', 'DV-CN'),
-            ('TEAM-KD-A', 'Nhom Kinh doanh A', 'DV-KD'),
-            ('TEAM-VH-A', 'Nhom Van hanh A', 'DV-VH'),
+            ('TEAM-CN-A', 'Nhóm Công nghệ A', 'DV-CN'),
+            ('TEAM-CN-B', 'Nhóm Công nghệ B', 'DV-CN'),
+            ('TEAM-KD-A', 'Nhóm Kinh doanh A', 'DV-KD'),
+            ('TEAM-VH-A', 'Nhóm Vận hành A', 'DV-VH'),
         ]
 
         lead_employee_codes = {'PNNV001', 'PNNV004', 'PNNV007'}

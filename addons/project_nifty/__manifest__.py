@@ -10,8 +10,12 @@
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'data/project_nifty_ai_cron.xml',
+        'data/project_nifty_mail_templates.xml',
         'data/project_nifty_hr_seed.xml',
         'data/project_nifty_sample_data.xml',
+        'views/settings_views.xml',
+        'views/ai_benchmark_log_views.xml',
         'views/project_views.xml',
         'views/team_views.xml',
         'views/tasklist_views.xml',
@@ -19,9 +23,6 @@
         'views/document_views.xml',
         'views/file_views.xml',
         'views/menu.xml',
-    ],
-    'demo': [
-        'demo/project_nifty_demo.xml',
     ],
     'assets': {
         'web.assets_backend': [

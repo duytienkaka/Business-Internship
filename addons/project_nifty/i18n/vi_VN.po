@@ -1,0 +1,195 @@
+# Translation of Odoo Server.
+# Project Nifty Vietnamese (accented) translations.
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-26 00:00+0000\n"
+"PO-Revision-Date: 2026-03-26 00:00+0000\n"
+"Last-Translator: Project Nifty Team\n"
+"Language-Team: Vietnamese\n"
+"Language: vi_VN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: project_nifty
+msgid "Khong co phan hoi."
+msgstr "Không có phản hồi."
+
+#. module: project_nifty
+msgid "Vui long nhap noi dung truoc khi gui."
+msgstr "Vui lòng nhập nội dung trước khi gửi."
+
+#. module: project_nifty
+msgid "Khong co noi dung de phan tich."
+msgstr "Không có nội dung để phân tích."
+
+#. module: project_nifty
+msgid "Khong nhan duoc noi dung de xuat tu AI."
+msgstr "Không nhận được nội dung đề xuất từ AI."
+
+#. module: project_nifty
+msgid "Khong the tao goi y ngay luc nay. Ban co the bam AI Suggest sau khi luu task."
+msgstr "Không thể tạo gợi ý ngay lúc này. Bạn có thể bấm AI Suggest sau khi lưu task."
+
+#. module: project_nifty
+msgid "Khong the tao goi y AI: %s"
+msgstr "Không thể tạo gợi ý AI: %s"
+
+#. module: project_nifty
+msgid "Khong the tu dong gan Department Manager. Vui long lien he Admin de kiem tra du lieu nhan_vien."
+msgstr "Không thể tự động gán Department Manager. Vui lòng liên hệ Admin để kiểm tra dữ liệu nhân_viên."
+
+#. module: project_nifty
+msgid "Khong tim thay context 1 project cu the, dang thong ke tong quan."
+msgstr "Không tìm thấy context một project cụ thể, đang thống kê tổng quan."
+
+#. module: project_nifty
+msgid "Khong co du lieu tong quan."
+msgstr "Không có dữ liệu tổng quan."
+
+#. module: project_nifty
+msgid "Khong co du lieu chi tiet."
+msgstr "Không có dữ liệu chi tiết."
+
+#. module: project_nifty
+msgid "Khong co"
+msgstr "Không có"
+
+#. module: project_nifty
+msgid "Khong thay canh bao lon. Duy tri nhip cap nhat trang thai hang ngay."
+msgstr "Không thấy cảnh báo lớn. Duy trì nhịp cập nhật trạng thái hằng ngày."
+
+#. module: project_nifty
+msgid "Canh bao tien do %s:"
+msgstr "Cảnh báo tiến độ %s:"
+
+#. module: project_nifty
+msgid "Canh bao tai trong, can review truoc khi Apply:\n"
+msgstr "Cảnh báo tải trọng, cần review trước khi Apply:\n"
+
+#. module: project_nifty
+msgid "Dang tao phan hoi..."
+msgstr "Đang tạo phản hồi..."
+
+#. module: project_nifty
+msgid "San sang"
+msgstr "Sẵn sàng"
+
+#. module: project_nifty
+msgid "Xac nhan hoan thanh"
+msgstr "Xác nhận hoàn thành"
+
+#. module: project_nifty
+msgid "Nhan AI Suggest Assignees de tao goi y giao viec..."
+msgstr "Nhấn AI Suggest Assignees để tạo gợi ý giao việc..."
+
+#. module: project_nifty
+msgid "Chi tiet"
+msgstr "Chi tiết"
+
+#. module: project_nifty
+msgid "Tong quan"
+msgstr "Tổng quan"
+
+#. module: project_nifty
+msgid "De xuat hanh dong"
+msgstr "Đề xuất hành động"
+
+#. module: project_nifty
+msgid "Noi dung hoi dai nen da tam dung tiep tuc. Ban bam Send them mot lan nua de lay phan con lai."
+msgstr "Nội dung hơi dài nên đã tạm dừng tiếp tục. Bạn bấm Send thêm một lần nữa để lấy phần còn lại."
+
+#. module: project_nifty
+msgid "Only Team Leader can create tasks."
+msgstr "Chỉ Team Leader có thể tạo task."
+
+#. module: project_nifty
+msgid "Only Team Leader can create task lists."
+msgstr "Chỉ Team Leader có thể tạo task list."
+
+#. module: project_nifty
+msgid "Only Team Leader can create documents."
+msgstr "Chỉ Team Leader có thể tạo tài liệu."
+
+#. module: project_nifty
+msgid "Only Team Leader can upload files."
+msgstr "Chỉ Team Leader có thể tải file lên."
+
+#. module: project_nifty
+msgid "Only Team Leader can approve tasks."
+msgstr "Chỉ Team Leader có thể duyệt task."
+
+#. module: project_nifty
+msgid "Only Team Leader can reject tasks."
+msgstr "Chỉ Team Leader có thể từ chối task."
+
+#. module: project_nifty
+msgid "Only assigned Team Member can submit task for review."
+msgstr "Chỉ Team Member được gán mới có thể gửi task để duyệt."
+
+#. module: project_nifty
+msgid "Only Department Manager can create projects."
+msgstr "Chỉ Department Manager có thể tạo project."
+
+#. module: project_nifty
+msgid "Only Department Manager can finalize project as Finished."
+msgstr "Chỉ Department Manager có thể xác nhận project hoàn thành."
+
+#. module: project_nifty
+msgid "Only Department Manager can cancel project."
+msgstr "Chỉ Department Manager có thể hủy project."
+
+#. module: project_nifty
+msgid "Only Department Manager can edit project information."
+msgstr "Chỉ Department Manager có thể chỉnh sửa thông tin project."
+
+#. module: project_nifty
+msgid "Only Team Leader can submit project completion request."
+msgstr "Chỉ Team Leader có thể gửi yêu cầu hoàn thành project."
+
+#. module: project_nifty
+msgid "Department Manager cannot directly edit tasks."
+msgstr "Department Manager không thể chỉnh sửa trực tiếp task."
+
+#. module: project_nifty
+msgid "Team Member cannot edit this task field."
+msgstr "Team Member không thể chỉnh sửa trường này của task."
+
+#. module: project_nifty
+msgid "Team Member can only set status to In Progress or Ready for Review."
+msgstr "Team Member chỉ có thể đặt trạng thái là In Progress hoặc Ready for Review."
+
+#. module: project_nifty
+msgid "Only assigned project members can edit tasks."
+msgstr "Chỉ thành viên được gán của project mới có thể chỉnh sửa task."
+
+#. module: project_nifty
+msgid "Only Team Leader can apply AI assignment suggestions."
+msgstr "Chỉ Team Leader có thể áp dụng gợi ý phân công AI."
+
+#. module: project_nifty
+msgid "No AI suggestion available. Please run AI Suggest first."
+msgstr "Chưa có gợi ý AI. Vui lòng chạy AI Suggest trước."
+
+#. module: project_nifty
+msgid "Deadline reminder"
+msgstr "Nhắc hạn"
+
+#. module: project_nifty
+msgid "Sent %s reminder email(s)."
+msgstr "Đã gửi %s email nhắc hạn."
+
+#. module: project_nifty
+msgid "Project Nifty AI Benchmark Monitor"
+msgstr "Project Nifty - Theo dõi benchmark AI"
+
+#. module: project_nifty
+msgid "Project Nifty Task Deadline Reminder"
+msgstr "Project Nifty - Nhắc hạn task"
+
+#. module: project_nifty
+msgid "Project Nifty Project Deadline Warning"
+msgstr "Project Nifty - Cảnh báo hạn project"

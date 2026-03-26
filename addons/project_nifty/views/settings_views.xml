@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_project_nifty_ai" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.project.nifty.ai</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="Project Nifty AI" string="Project Nifty AI" data-key="project_nifty_ai">
+                    <h2>Project Nifty AI Assignment</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <label for="ai_weight_focus_per"/>
+                                <div class="text-muted">Skill-focus scoring weights and caps.</div>
+                                <div class="content-group mt8">
+                                    <div><field name="ai_weight_focus_per"/></div>
+                                    <div><field name="ai_weight_focus_cap"/></div>
+                                    <div><field name="ai_penalty_profile_mismatch"/></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <label for="ai_weight_keyword_per"/>
+                                <div class="text-muted">Keyword and continuity scoring.</div>
+                                <div class="content-group mt8">
+                                    <div><field name="ai_weight_keyword_per"/></div>
+                                    <div><field name="ai_weight_keyword_cap"/></div>
+                                    <div><field name="ai_bonus_same_task"/></div>
+                                    <div><field name="ai_bonus_same_team"/></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <label for="ai_bonus_workload_light"/>
+                                <div class="text-muted">Workload balancing controls.</div>
+                                <div class="content-group mt8">
+                                    <div><field name="ai_bonus_workload_light"/></div>
+                                    <div><field name="ai_bonus_workload_medium"/></div>
+                                    <div><field name="ai_penalty_workload_high"/></div>
+                                    <div><field name="ai_penalty_overdue_cap"/></div>
+                                    <div><field name="ai_penalty_critical"/></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                <label for="ai_monitor_min_accuracy"/>
+                                <div class="text-muted">Benchmark monitor threshold and latest snapshot.</div>
+                                <div class="content-group mt8">
+                                    <div><field name="ai_monitor_min_accuracy"/></div>
+                                    <div><button name="action_run_ai_benchmark_now" type="object" string="Run Benchmark Now" class="btn-primary"/></div>
+                                    <div><field name="ai_benchmark_last_summary" readonly="1" nolabel="1"/></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

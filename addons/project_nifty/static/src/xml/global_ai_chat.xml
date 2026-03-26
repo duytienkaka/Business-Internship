@@ -13,7 +13,7 @@
                 <div class="project_nifty_ai_chat_status">San sang</div>
                 <div class="project_nifty_ai_chat_body"/>
                 <div class="project_nifty_ai_chat_footer">
-                    <textarea class="project_nifty_ai_chat_input" rows="2" placeholder="Nhap noi dung va nhan Enter..."/>
+                    <textarea class="project_nifty_ai_chat_input" rows="2" placeholder="Nhập nội dung và nhấn Enter..."/>
                     <button type="button" class="project_nifty_ai_chat_send">Send</button>
                 </div>
             </div>

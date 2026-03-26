@@ -20,7 +20,7 @@ odoo.define('project_nifty.global_ai_chat', function (require) {
 
     function extractErrorMessage(error) {
         if (!error) {
-            return 'Da xay ra loi khi goi AI.';
+            return 'Đã xảy ra lỗi khi gọi AI.';
         }
 
         const data = error && error.data ? error.data : null;
@@ -61,7 +61,7 @@ odoo.define('project_nifty.global_ai_chat', function (require) {
                 }
             }
         }
-        return 'Da xay ra loi khi goi AI.';
+        return 'Đã xảy ra lỗi khi gọi AI.';
     }
 
     function applyInlineMarkdown(escapedText) {
@@ -126,7 +126,7 @@ odoo.define('project_nifty.global_ai_chat', function (require) {
                 + '<div class="project_nifty_ai_chat_status">San sang</div>'
                 + '<div class="project_nifty_ai_chat_body"></div>'
                 + '<div class="project_nifty_ai_chat_footer">'
-                + '<textarea class="project_nifty_ai_chat_input" rows="2" placeholder="Nhap noi dung va nhan Enter..."></textarea>'
+                + '<textarea class="project_nifty_ai_chat_input" rows="2" placeholder="Nhập nội dung và nhấn Enter..."></textarea>'
                 + '<button type="button" class="project_nifty_ai_chat_send">Send</button>'
                 + '</div>'
                 + '</div>'
@@ -194,6 +194,8 @@ odoo.define('project_nifty.global_ai_chat', function (require) {
                 return;
             }
 
+            const contextPayload = this._buildChatContextPayload();
+
             this._pushMessage('user', message);
             this.$input.val('');
             this._renderMessages();
@@ -202,8 +204,9 @@ odoo.define('project_nifty.global_ai_chat', function (require) {
             ajax.jsonRpc('/project_nifty/ai_chat/reply', 'call', {
                 message: message,
                 history: this.history,
+                context_payload: contextPayload,
             }).then((result) => {
-                const reply = (result && result.reply) || 'Khong co phan hoi.';
+                const reply = (result && result.reply) || 'Không có phản hồi.';
                 if (reply) {
                     this._pushMessage('assistant', reply);
                     this._renderMessages();
@@ -226,15 +229,17 @@ odoo.define('project_nifty.global_ai_chat', function (require) {
         },
 
         _continuePendingReply: function () {
-            const maxChunks = 4;
+            const maxChunks = 8;
             let loops = 0;
+            let reachedLoopCap = false;
 
             const fetchNext = () => {
                 if (loops >= maxChunks) {
+                    reachedLoopCap = true;
                     return Promise.resolve();
                 }
                 loops += 1;
-                this.$('.project_nifty_ai_chat_status').text('Dang tiep tuc cau tra loi...');
+                this.$('.project_nifty_ai_chat_status').text('Đang tiếp tục câu trả lời...');
 
                 return ajax.jsonRpc('/project_nifty/ai_chat/reply', 'call', {
                     message: '',
@@ -243,7 +248,7 @@ odoo.define('project_nifty.global_ai_chat', function (require) {
                 }).then((result) => {
                     const chunk = ((result && result.reply) || '').trim();
                     if (chunk) {
-                        this._pushMessage('assistant', chunk);
+                        this._appendAssistantChunk(chunk);
                         this._renderMessages();
                     }
                     if (result && result.pending_continuation) {
@@ -252,13 +257,18 @@ odoo.define('project_nifty.global_ai_chat', function (require) {
                     return Promise.resolve();
                 }).guardedCatch((error) => {
                     const errorMessage = extractErrorMessage(error);
-                    this._pushMessage('assistant', 'Loi khi tiep tuc: ' + errorMessage);
+                    this._pushMessage('assistant', 'Lỗi khi tiếp tục: ' + errorMessage);
                     this._renderMessages();
                     return Promise.resolve();
                 });
             };
 
-            return fetchNext();
+            return fetchNext().then(() => {
+                if (reachedLoopCap) {
+                    this._pushMessage('assistant', 'Nội dung hơi dài nên đã tạm dừng tiếp tục. Bạn bấm Send thêm một lần nữa để lấy phần còn lại.');
+                    this._renderMessages();
+                }
+            });
         },
 
         _onClearMessages: function () {
@@ -272,6 +282,19 @@ odoo.define('project_nifty.global_ai_chat', function (require) {
             this.history.push({ role: role, content: content });
             this.history = this.history.slice(-30);
             this._saveHistory();
+        },
+
+        _appendAssistantChunk: function (chunk) {
+            if (!chunk) {
+                return;
+            }
+            const lastIndex = this.history.length - 1;
+            if (lastIndex >= 0 && this.history[lastIndex].role === 'assistant') {
+                this.history[lastIndex].content = (this.history[lastIndex].content || '') + '\n' + chunk;
+                this._saveHistory();
+                return;
+            }
+            this._pushMessage('assistant', chunk);
         },
 
         _renderMessages: function () {
@@ -295,7 +318,7 @@ odoo.define('project_nifty.global_ai_chat', function (require) {
         _setPendingState: function (isPending) {
             this.$('.project_nifty_ai_chat_send').prop('disabled', isPending);
             this.$('.project_nifty_ai_chat_input').prop('disabled', isPending);
-            this.$('.project_nifty_ai_chat_status').text(isPending ? 'Dang tao phan hoi...' : 'San sang');
+            this.$('.project_nifty_ai_chat_status').text(isPending ? 'Đang tạo phản hồi...' : 'Sẵn sàng');
         },
 
         _loadOpenState: function () {
@@ -380,6 +403,26 @@ odoo.define('project_nifty.global_ai_chat', function (require) {
             }
             const id = parseInt(raw, 10);
             return Number.isFinite(id) ? id : null;
+        },
+
+        _buildChatContextPayload: function () {
+            const hash = (window.location.hash || '').replace(/^#/, '');
+            if (!hash) {
+                return {};
+            }
+            const params = new URLSearchParams(hash);
+            const model = String(params.get('model') || '').trim();
+            const action = String(params.get('action') || '').trim();
+            const menuId = this._currentMenuId();
+            const resIdRaw = String(params.get('id') || '').trim();
+            const resId = parseInt(resIdRaw, 10);
+
+            return {
+                model: model,
+                action: action,
+                menu_id: Number.isFinite(menuId) ? menuId : false,
+                res_id: Number.isFinite(resId) ? resId : false,
+            };
         },
 
         _setVisibility: function (isVisible) {

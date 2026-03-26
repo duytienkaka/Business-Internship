@@ -3,9 +3,10 @@ access_project_nifty_department_manager_project,project.nifty.department.manager
 access_project_nifty_department_manager_team,project.nifty.department.manager.team,model_project_nifty_team,project_nifty.group_project_nifty_department_manager,1,1,1,1
 access_project_nifty_department_manager_tasklist,project.nifty.department.manager.tasklist,model_project_nifty_tasklist,project_nifty.group_project_nifty_department_manager,1,0,0,0
 access_project_nifty_department_manager_task,project.nifty.department.manager.task,model_project_nifty_task,project_nifty.group_project_nifty_department_manager,1,0,0,0
-access_project_nifty_department_manager_document,project.nifty.department.manager.document,model_project_nifty_document,project_nifty.group_project_nifty_department_manager,1,0,0,0
-access_project_nifty_department_manager_file,project.nifty.department.manager.file,model_project_nifty_file,project_nifty.group_project_nifty_department_manager,1,0,0,0
+access_project_nifty_department_manager_document,project.nifty.department.manager.document,model_project_nifty_document,project_nifty.group_project_nifty_department_manager,1,0,1,0
+access_project_nifty_department_manager_file,project.nifty.department.manager.file,model_project_nifty_file,project_nifty.group_project_nifty_department_manager,1,0,1,0
 access_project_nifty_department_manager_ai_chat,project.nifty.department.manager.ai.chat,model_project_nifty_ai_chat,project_nifty.group_project_nifty_department_manager,1,0,0,0
+access_project_nifty_department_manager_ai_benchmark_log,project.nifty.department.manager.ai.benchmark.log,model_project_nifty_ai_benchmark_log,project_nifty.group_project_nifty_department_manager,1,0,0,0
 
 access_project_nifty_team_leader_project,project.nifty.team.leader.project,model_project_nifty,project_nifty.group_project_nifty_team_leader,1,0,0,0
 access_project_nifty_team_leader_team,project.nifty.team.leader.team,model_project_nifty_team,project_nifty.group_project_nifty_team_leader,1,0,0,0
@@ -14,6 +15,7 @@ access_project_nifty_team_leader_task,project.nifty.team.leader.task,model_proje
 access_project_nifty_team_leader_document,project.nifty.team.leader.document,model_project_nifty_document,project_nifty.group_project_nifty_team_leader,1,1,1,1
 access_project_nifty_team_leader_file,project.nifty.team.leader.file,model_project_nifty_file,project_nifty.group_project_nifty_team_leader,1,1,1,1
 access_project_nifty_team_leader_ai_chat,project.nifty.team.leader.ai.chat,model_project_nifty_ai_chat,project_nifty.group_project_nifty_team_leader,1,0,0,0
+access_project_nifty_team_leader_ai_benchmark_log,project.nifty.team.leader.ai.benchmark.log,model_project_nifty_ai_benchmark_log,project_nifty.group_project_nifty_team_leader,1,0,0,0
 
 access_project_nifty_team_member_project,project.nifty.team.member.project,model_project_nifty,project_nifty.group_project_nifty_team_member,1,0,0,0
 access_project_nifty_team_member_team,project.nifty.team.member.team,model_project_nifty_team,project_nifty.group_project_nifty_team_member,1,0,0,0
@@ -22,6 +24,7 @@ access_project_nifty_team_member_task,project.nifty.team.member.task,model_proje
 access_project_nifty_team_member_document,project.nifty.team.member.document,model_project_nifty_document,project_nifty.group_project_nifty_team_member,1,0,0,0
 access_project_nifty_team_member_file,project.nifty.team.member.file,model_project_nifty_file,project_nifty.group_project_nifty_team_member,1,0,0,0
 access_project_nifty_team_member_ai_chat,project.nifty.team.member.ai.chat,model_project_nifty_ai_chat,project_nifty.group_project_nifty_team_member,1,0,0,0
+access_project_nifty_team_member_ai_benchmark_log,project.nifty.team.member.ai.benchmark.log,model_project_nifty_ai_benchmark_log,project_nifty.group_project_nifty_team_member,1,0,0,0
 
 access_project_nifty_admin_project,project.nifty.admin.project,model_project_nifty,base.group_system,1,1,1,1
 access_project_nifty_admin_team,project.nifty.admin.team,model_project_nifty_team,base.group_system,1,1,1,1
@@ -30,3 +33,4 @@ access_project_nifty_admin_task,project.nifty.admin.task,model_project_nifty_tas
 access_project_nifty_admin_document,project.nifty.admin.document,model_project_nifty_document,base.group_system,1,1,1,1
 access_project_nifty_admin_file,project.nifty.admin.file,model_project_nifty_file,base.group_system,1,1,1,1
 access_project_nifty_admin_ai_chat,project.nifty.admin.ai.chat,model_project_nifty_ai_chat,base.group_system,1,1,1,1
+access_project_nifty_admin_ai_benchmark_log,project.nifty.admin.ai.benchmark.log,model_project_nifty_ai_benchmark_log,base.group_system,1,1,1,1
